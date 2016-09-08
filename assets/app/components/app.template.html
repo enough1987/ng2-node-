@@ -1,0 +1,74 @@
+
+<div class="logik-block" >
+
+
+        <p>
+            <label class="admin-header"> Type of component </label> <br />
+            <label>
+            Mutable :  
+                <input type="radio" 
+                    value="mutable" 
+                    name="mutability"
+                    (click)="set_new_component_mutability('mutable')"
+                />
+            </label>
+            <label>
+            Immutable :    
+                <input type="radio" 
+                    value="immutable"
+                    name="mutability"
+                    (click)="set_new_component_mutability('immutable')"
+                />
+            </label>
+        </p>
+
+
+</div>
+
+<div class="logik-block" 
+    *ngIf=" new_component.mutability == 'mutable' " >
+
+    <div>
+        <input type="text" placeholder="name" 
+            [(ngModel)]="new_component.name" 
+        />
+         <input type="button" value="add new component" 
+            (click)="create_component()"    
+        />
+    </div>
+ 
+    <div 
+    *ngFor=" let component of components " > 
+
+        <div 
+            *ngIf="component.mutability == 'mutable' " >
+            <label> {{ component.name }}</label>
+            <br />
+            <input type="text" placeholder="new name"
+                [(ngModel)]="component.new_name" />  
+            <input type="button" value="change"
+                (click)="change_component(component)" />
+            <br />
+            <input type="button" value="copy"
+                (click)="copy_component(component)" />
+            <input type="button" value="delete"
+                (click)="delete_component(component._id)" />  
+            <input type="button" value="edit fields"
+                (click)="edit_fields_component(component)" />        
+        </div>
+ 
+        <div *ngIf="show_fields_component(component)">
+                ------------- tt -------------
+                <input class="m-left-field" type="text" placeholder="name" />
+                <input class="m-left-field" type="text" placeholder="type" />
+                <input type="buttom" placeholder="add" />                
+
+                <div class="m-left-field"
+                    *ngFor=" let field of field_editable.body " >
+
+                </div>
+        </div>
+
+    </div>
+
+</div>

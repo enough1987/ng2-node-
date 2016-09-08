@@ -1,0 +1,21 @@
+
+.logik-block {
+    width: 90%;
+    margin: 10px auto;
+    padding: 10px;
+    position: relative;
+}
+
+.admin-header {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.margin10 {
+    margin: 10px;
+}
+
+.m-left-field {
+    margin: 10px;
+}
+
