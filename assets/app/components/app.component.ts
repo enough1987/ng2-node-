@@ -14,7 +14,8 @@ import {ObjectToArrayPipe} from "../pipes/objectToArray.pipe";
 export class AppComponent {
     public new_component = this.init_new_component();
     public components = [];
-    public field_editable = [];
+    public component_editable = [];
+    public new_field = { type: "string" };     
 
     constructor(public storageService: StorageService) {}
 
@@ -133,15 +134,87 @@ export class AppComponent {
     };
 
     edit_fields_component(component){
-        this.field_editable = component;
+        this.new_field = { type: "string" };   
+        this.component_editable = component;
     };
 
     show_fields_component(component){
-        console.log( this.field_editable , component );
-        if (  this.field_editable &&
-              this.field_editable._id === component._id 
+        if (  this.component_editable &&
+              this.component_editable._id === component._id 
         ) return true;
     }; 
+
+    add_field( component, new_field = {} ){
+        //console.log( component, new_field );
+        if ( this.exist_field_with_this_name(component, new_field.name) ) return ;
+        this.new_field = { type: "string" }; 
+        new_field._id = this.create_guid();
+        component.body = [ ... component.body , new_field ];
+        //console.log( component.body );
+        this.storageService.update('/api/components',{
+            id : component._id,
+            name : component.name,
+            group : component.group,
+            mutability : component.mutability,
+            body : component.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
+
+    };
+
+    change_field( component, field = {} ){
+        //console.log(component, field);
+        if ( this.exist_field_with_this_name(component, field.edit_name ) ) return;
+        field.name = field.edit_name;
+        delete field.edit_name;
+
+        this.storageService.update('/api/components',{
+            id : component._id,
+            name : component.name,
+            group : component.group,
+            mutability : component.mutability,
+            body : component.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
+        
+    };
+
+    copy_field(component, field){
+        //console.log(component, field);
+        if ( this.exist_field_with_this_name(component, field.edit_name ) ) return;
+        let new_field = this.deepCopy(field);
+        new_field.name = new_field.edit_name;
+        delete new_field.edit_name;
+        console.log( new_field );
+    };
+
+    delete_field(component, field){
+        console.log(component, field);
+    };
+
+    exist_field_with_this_name(component, field_name){
+        if ( !component ||
+             !component.body ||
+             !field_name 
+        ) {
+            console.log(' fields was not provided ');
+            return true;
+        }
+        if(
+            component.body.find(el => { return el.name === field_name ? true : false })
+        ) {
+            console.log(  ' field with such name exists ' );
+            return true;
+        }
+        return false;
+    };
+    
 
 
     

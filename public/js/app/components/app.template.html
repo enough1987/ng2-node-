@@ -58,14 +58,36 @@
         </div>
  
         <div *ngIf="show_fields_component(component)">
-                ------------- tt -------------
-                <input class="m-left-field" type="text" placeholder="name" />
-                <input class="m-left-field" type="text" placeholder="type" />
-                <input type="buttom" placeholder="add" />                
+                <input class="m-left-field" type="text" placeholder="name" 
+                    [(ngModel)]="new_field.name" />
+                <select [(ngModel)]="new_field.type">
+                    <option value="string" selected >String</option>
+                    <option value="number">Number</option>
+                    <option value="image">Image</option>
+                    <option value="component">Component</option>
+                </select>
+                <input type="button" value="add" 
+                    (click)="add_field(component, new_field)" />                
 
                 <div class="m-left-field"
-                    *ngFor=" let field of field_editable.body " >
+                    *ngFor=" let field of component?.body " >
 
+                     <div *ngIf=" field.type == 'string' " >
+                        Name : {{ field.name }}
+                        <input type="text" placeholder="new name" 
+                            [(ngModel)]="field.edit_name" 
+                        />
+                        <input type="button" value="change"
+                            (click)="change_field(component, field)" />
+                         <input type="button" value="copy"
+                            (click)="copy_field(component, field)" />
+                         <input type="button" value="delete"
+                            (click)="delete_field(component, field)" /> 
+                         <br />
+                        <textarea cols="53" rows="10"
+                            [(ngModel)]="field.edit_value"
+                            value="field.value" ></textarea> 
+                     </div>
                 </div>
         </div>
 
