@@ -67,8 +67,30 @@
                     <option value="component">Component</option>
                 </select>
                 <input type="button" value="add" 
-                    (click)="add_field(component, new_field)" />                
+                    (click)="add_field(component, new_field)" />   
 
+                <p>Components : </p>
+                <div class="m-left-field"
+                    *ngFor=" let field of component?.body " >
+
+                     <div *ngIf=" field.type == 'component' " >
+                        Name : {{ field.name }}
+                        <input type="text" placeholder="new name" 
+                            [(ngModel)]="field.edit_name" 
+                        />
+                        <input type="button" value="change"
+                            (click)="change_field({ component: component, field: field, type: 'component' })" />
+                         <input type="button" value="copy"
+                            (click)="copy_field({ component: component, field: field, type: 'component' })" />
+                         <input type="button" value="delete"
+                            (click)="delete_field({ component: component, field: field, type: 'component' })" /> 
+                         <br *ngIf="value_assignment(field)" />
+                         <input type="text" 
+                            [(ngModel)]="field.edit_value" /> 
+                     </div>
+                </div>                                 
+
+                <p>Strings : </p>
                 <div class="m-left-field"
                     *ngFor=" let field of component?.body " >
 
@@ -78,17 +100,40 @@
                             [(ngModel)]="field.edit_name" 
                         />
                         <input type="button" value="change"
-                            (click)="change_field(component, field)" />
+                            (click)="change_field({ component: component, field: field, type: 'string' })" />
                          <input type="button" value="copy"
-                            (click)="copy_field(component, field)" />
+                            (click)="copy_field({ component: component, field: field, type: 'string' })" />
                          <input type="button" value="delete"
-                            (click)="delete_field(component, field)" /> 
-                         <br />
-                        <textarea cols="53" rows="10"
-                            [(ngModel)]="field.edit_value"
-                            value="field.value" ></textarea> 
+                            (click)="delete_field({ component: component, field: field, type: 'string' })" /> 
+                         <br *ngIf="value_assignment(field)" />
+                        <textarea cols="100" rows="3"
+                            [(ngModel)]="field.edit_value" >
+                        </textarea> 
                      </div>
                 </div>
+
+                <p>Numbers : </p>
+                <div class="m-left-field"
+                    *ngFor=" let field of component?.body " >
+
+                     <div *ngIf=" field.type == 'number' " >
+                        Name : {{ field.name }}
+                        <input type="text" placeholder="new name" 
+                            [(ngModel)]="field.edit_name" 
+                        />
+                        <input type="button" value="change"
+                            (click)="change_field({ component: component, field: field, type: 'number' })" />
+                         <input type="button" value="copy"
+                            (click)="copy_field({ component: component, field: field, type: 'number' })" />
+                         <input type="button" value="delete"
+                            (click)="delete_field({ component: component, field: field, type: 'number' })" /> 
+                         <br *ngIf="value_assignment(field)" />
+                         <input type="number" 
+                            [(ngModel)]="field.edit_value" />
+                     </div>
+                </div>
+
+
         </div>
 
     </div>
