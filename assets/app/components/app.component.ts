@@ -24,7 +24,7 @@ export class AppComponent {
         this.get_all_components();
     };
 
-    init_new_component(mutability = ''){
+    init_new_component(mutability = 'mutable'){
         return {
             mutability : mutability
         };
@@ -178,13 +178,18 @@ export class AppComponent {
     };
 
     if_component_field(component, val){
+        let res = [];
         //console.log(component, val);
         this.components.find(el => { 
+            //console.log( el.name );
             if ( el.name === val &&
                component.name !== val ) {
-                   console.log( component );
-               }                
+                   //console.log( 'res ', el );
+                   res =  el;
+               }
+               //console.log( ' //////////////// ');                
         })
+        return res;
     };
 
     change_field( settings = {} ){
@@ -194,11 +199,10 @@ export class AppComponent {
         //console.log(component, field);
         if ( this.exist_field_with_this_name(component, field.edit_name, field._id ) ) return;
         if ( settings.type == 'number' ) {
-            field.edit_value = this.if_number_field(field.edit_value);
+            field.edit_value = this.if_number_field(field.edit_value_name);
         }
         if ( settings.type == 'component' ) {
-            this.if_component_field(component, field.edit_value);
-            return;
+            field.component_value = this.if_component_field(component, field.edit_value);
         }
         field.name = field.edit_name || field.name;
         field.value = field.edit_value;
@@ -265,15 +269,28 @@ export class AppComponent {
         component.body.forEach( (el, idx, arr) => { 
             if(el._id === field._id ) {
                 arr.splice(idx, 1);
-                console.log( arr, idx );
+                //console.log( arr, idx );
             } 
         });
-
+        this.storageService.update('/api/components',{
+            id : component._id,
+            name : component.name,
+            group : component.group,
+            mutability : component.mutability,
+            body : component.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
         
     };
 
     value_assignment(field){
         if (  !field.assignment ){
+            if ( field.type == 'component' ) {
+                field.component_value = field.component_value || [];
+            }
             field.edit_value = field.value;
             field.assignment = true;
         }
