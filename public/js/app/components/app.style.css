@@ -1,4 +1,58 @@
 
+.custom-restricted-width {
+    display: inline-block;
+}
+
+.custom-hidden {
+    visibility: hidden;
+}
+
+.custom-margin-top {
+    margin-top: 15px;
+}
+
+.custom-main-block {
+    margin: 40px 5%;
+}
+
+.custom-heading {
+    text-transform: none;
+}
+
+.custom-component-item {
+    width: 90%;
+    margin: 1px auto;
+    padding: .3em 1em;
+    color: #777;
+    text-decoration: none;
+    white-space: nowrap;
+
+}
+.custom-component-item:hover {
+    background-color: #eff1f1;
+}
+
+.custom-component-item-label {
+    padding-top: 0.9em;
+    font-size: 0.8em !important;
+    color: #1c1c33 !important;
+}
+.custom-hover_color:hover , .custom-hover_color:hover .pure-menu-link , .custom-component-item-button:hover {
+    color: #f79a84 !important;
+}
+
+.custom-component-item:hover .custom-component-item-button {
+    background: white !important;
+}
+
+.custom-focus {
+    background-color: #eee;
+}
+
+.custom-margin-top {
+    margin-top: 2em;
+}
+
 .logik-block {
     width: 90%;
     margin: 10px auto;

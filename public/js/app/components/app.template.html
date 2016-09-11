@@ -1,5 +1,77 @@
 
-<div class="logik-block" >
+<div class="pure-g custom-main-block">
+
+    <div class="pure-u-1-5 pure-menu custom-restricted-width">
+        <span class="pure-menu-heading custom-hidden custom-margin-top"> HIDDEN </span>
+
+        <ul class="pure-menu-list">
+            <li (click)="set_current_view('components')"
+                [class.custom-focus]=" choosen_menu( current_view, 'components' ) "
+                class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
+                components</a></li>
+
+        </ul>
+    </div>
+
+    <data-wrupper *ngIf=" current_view == 'components' " class="pure-u-4-5">
+        <div class="pure-g" >       
+
+            <div class="pure-u-3-5"></div>
+            <div class="pure-u-2-5">
+
+                <div class="pure-menu pure-menu-horizontal">
+
+                    <ul class="pure-menu-list">
+                        
+                        <li 
+[class.custom-focus]=" choosen_menu( components_current_view, 'all' ) "
+                        class="pure-menu-item custom-hover_color pure-menu-selected"><a href="#" class="pure-menu-link">
+                            all</a></li>
+                        <li 
+[class.custom-focus]=" choosen_menu( components_current_view, 'mutable' ) "                        
+                        class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
+                            mutable</a></li>
+                        <li
+[class.custom-focus]=" choosen_menu( components_current_view, 'immutable' ) "
+                        class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
+                            immutable</a></li>
+
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="pure-u-5-5 custom-margin-top">
+                
+            <div class="pure-g custom-component-item"
+                *ngFor=" let component of components " > 
+
+                <label class="pure-u-2-5 custom-component-item-label"> 
+                    Name : {{ component.name }} 
+                </label>
+                <label class="pure-u-1-5 custom-component-item-label"> 
+                    Type : {{ component.type || component.mutability }} 
+                </label>
+                <label class="pure-u-1-5 custom-component-item-label">
+                    Group : {{ component.group || 'none' }} 
+                </label>
+                <input type="button" class="pure-u-1-5 pure-button custom-component-item-button" value="edit"
+                       (click)="edit_fields_component(component)" />  
+
+            </div>
+
+
+
+            </div>
+        </div> 
+    </data-wrupper>
+
+</div> 
+
+
+<div class="logik-block" style="display:none;" >
+
+
 
 
         <p>
@@ -137,6 +209,23 @@
 
         </div>
 
+    </div>
+
+</div>
+
+<div class="logik-block" 
+    *ngIf=" new_component.mutability == 'immutable' " >
+
+    <div>
+        <input type="text" placeholder="name" 
+            [(ngModel)]="new_component.name" 
+        />
+        <input type="text" placeholder="group" 
+            [(ngModel)]="new_component.group" 
+        />
+         <input type="button" value="add new component" 
+            (click)="create_component()"    
+        />
     </div>
 
 </div>

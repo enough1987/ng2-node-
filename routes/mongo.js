@@ -5,18 +5,17 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var ObjectId = Schema.ObjectId;
 
-mongoose.connect('localhost:27017/pages');
+mongoose.connect('localhost:27017/components');
 
-
-var schema = new Schema({
+var components_schema = new Schema({
   name : String,
   group : String,
   mutability : String,
   body : Array
  });
-var model = mongoose.model('pages', schema);
+var components_model = mongoose.model('components', components_schema);
 
 
 
 module.exports.ObjectId = ObjectId;
-module.exports.model = model;
+module.exports.components_model = components_model;

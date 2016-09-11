@@ -2,13 +2,13 @@ var express = require('express');
 var router = express.Router();
 var url = require("url");
 
-var db = require(__dirname + '/mongo.js').model;
+var db_components = require(__dirname + '/mongo.js').components_model;
 
 // remove all
-//db.find().remove().exec();
+//db_components.find().remove().exec();
 
 router.get('/api/components', function(req, res, next){
-    var data = db.find();
+    var data = db_components.find();
     data.then(function(doc){   
       console.log( ' find components ' );
       res.json({error: false, components: doc});
@@ -20,9 +20,9 @@ router.post('/api/components', function(req, res, next){
         res.json({error: true, msg: 'no name or body was provided'});
         return ;
       }
-      var post = new db({
+      var post = new db_components({
         name : req.body.name,
-        group : req.body.group,
+        group : req.body.group || 'mutable',
         mutability : req.body.mutability,
         body : req.body.body
       });
@@ -31,7 +31,7 @@ router.post('/api/components', function(req, res, next){
           res.json({error: true, msg: 'save was not work'});
           return ;
         }
-        var data = db.find();
+        var data = db_components.find();
         data.then(function(doc){  
           res.json({
             error : false,
@@ -46,9 +46,9 @@ router.put('/api/components', function(req, res, next){
         res.json({error: true, msg: 'no name or body or id was provided'});
         return ;
       }
-      db.findOneAndUpdate({_id:req.body.id}, {
+      db_components.findOneAndUpdate({_id:req.body.id}, {
         name : req.body.name,
-        group :  req.body.group,
+        group :  req.body.group || 'mutable',
         mutability : req.body.mutability,
         body : req.body.body
       }, function (err, result) {
@@ -56,7 +56,7 @@ router.put('/api/components', function(req, res, next){
             res.json({error: true, msg: 'update was not successfull, there are some error'});
             return ;
           } else {
-            var data = db.find();
+            var data = db_components.find();
             data.then(function(doc){  
               res.json({
                 error : false,
@@ -76,12 +76,12 @@ router.delete('/api/components', function(req, res, next){
         res.json({error: true, msg: 'no id was provided'});
         return ;
       }
-      db.findByIdAndRemove(id ,function(err, result){
+      db_components.findByIdAndRemove(id ,function(err, result){
           if( err ) {
             res.json({error: true, msg: 'delete was not successfull, there are some error'});
             return ;
           } else {
-            var data = db.find();
+            var data = db_components.find();
             data.then(function(doc){  
               res.json({
                 error : false,

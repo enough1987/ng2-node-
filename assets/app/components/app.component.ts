@@ -15,7 +15,8 @@ export class AppComponent {
     public new_component = this.init_new_component();
     public components = [];
     public component_editable = [];
-    public new_field = { type: "string" };     
+    public new_field = { type: "string" };   
+    public new_group = [];
 
     constructor(public storageService: StorageService) {}
 
@@ -24,7 +25,15 @@ export class AppComponent {
         this.get_all_components();
     };
 
-    init_new_component(mutability = 'mutable'){
+    set_current_view( view ){
+        this.current_view = view;
+    };
+
+    choosen_menu( a, b ){
+        if ( a == b ) return true;
+    }
+
+    init_new_component(mutability = ''){
         return {
             mutability : mutability
         };
