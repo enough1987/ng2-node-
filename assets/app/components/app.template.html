@@ -14,41 +14,49 @@
     <div *ngIf=" current_view == 'components' " class="col-xs-12 col-sm-9">
             <div class="container-fluid" >       
 
-                    <ul class="row c-admin-component-menu">
+                    <div class="row c-admin-component-menu">
                         
-                        <li 
+                        <div 
 (click)="set_components_current_view('all')"
 [class.c-choosen-item]=" choosen_menu( components_current_view, 'all' ) "
-                        class="col-xs-12 col-sm-2 col-sm-offset-6 c-admin-component-item">
-                            all</li>
-                        <li 
-(click)="set_components_current_view('mutable')"                        
-[class.c-choosen-item]=" choosen_menu( components_current_view, 'mutable' ) "                        
-                        class="col-xs-12 col-sm-2 c-admin-component-item">
-                            mutable</li>
-                        <li
-(click)="set_components_current_view('immutable')"                        
-[class.c-choosen-item]=" choosen_menu( components_current_view, 'immutable' ) "
-                        class="col-xs-12 col-sm-2 c-admin-component-item">
-                            immutable</li>
+                        class="col-xs-12 col-sm-2 col-sm-offset-8 c-admin-component-item">
+                            all
+                        </div>
 
-                    </ul>
 
+                        <div                                              
+                        class="col-xs-12 col-sm-2">
+  <select (change)="set_components_current_view($event.target.value)"
+    class="form-control" >
+    <option>none</option>
+    <option *ngFor=" let item of [1, 2, 3, 4]" >
+        {{ item }}
+    </option>
+  </select>
+
+                        </div>
+
+
+                    </div>
+
+            </div>
+
+            <div class="row" >
+                add component
             </div>
 
             <div class="row"
                 *ngFor=" let component of components " > 
 
-                <label class="col-xs-12 col-sm-3 t-a-center-md"> 
+                <label class="col-xs-12 col-sm-4 t-a-center-md"> 
                     Name : {{ component.name }} 
                 </label>
-                <label class="col-xs-12 col-sm-3 t-a-center-md"> 
-                    Type : {{ component.type || component.mutability }} 
-                </label>
-                <label class="col-xs-12 col-sm-3 t-a-center-md">
+
+                <label class="col-xs-12 col-sm-4 t-a-center-md">
                     Group : {{ component.group || 'none' }} 
                 </label>
-                <input type="button" class="col-xs-12 col-sm-3 btn btn-default" value="edit"
+
+                <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-2  btn btn-default" value="edit"
                        (click)="edit_fields_component(component)" />  
 
             </div>

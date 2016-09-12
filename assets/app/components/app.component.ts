@@ -30,6 +30,7 @@ export class AppComponent {
     };
     set_components_current_view( view ) {
         this.components_current_view = view;
+        console.log( ' item ', view );
     };
 
     choosen_menu( a, b ){
