@@ -1,70 +1,58 @@
 
-<div class="pure-g custom-main-block">
+<div class="container c-main-admin-block">
 
-    <div class="pure-u-1-5 pure-menu custom-restricted-width">
-        <span class="pure-menu-heading custom-hidden custom-margin-top"> HIDDEN </span>
-
-        <ul class="pure-menu-list">
+    <div class="col-xs-12 col-sm-3">
+        <ul class="">
             <li (click)="set_current_view('components')"
-                [class.custom-focus]=" choosen_menu( current_view, 'components' ) "
-                class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
-                components</a></li>
+                [class.c-choosen-item]=" choosen_menu( current_view, 'components' ) "
+                class="c-admin-component-item">
+                components</li>
 
         </ul>
     </div> 
 
-    <data-wrupper *ngIf=" current_view == 'components' " class="pure-u-4-5">
-        <div class="pure-g" >       
+    <div *ngIf=" current_view == 'components' " class="col-xs-12 col-sm-9">
+            <div class="container-fluid" >       
 
-            <div class="pure-u-3-5"></div>
-            <div class="pure-u-2-5">
-
-                <div class="pure-menu pure-menu-horizontal">
-
-                    <ul class="pure-menu-list">
+                    <ul class="row c-admin-component-menu">
                         
                         <li 
-[class.custom-focus]=" choosen_menu( components_current_view, 'all' ) "
-                        class="pure-menu-item custom-hover_color pure-menu-selected"><a href="#" class="pure-menu-link">
-                            all</a></li>
+(click)="set_components_current_view('all')"
+[class.c-choosen-item]=" choosen_menu( components_current_view, 'all' ) "
+                        class="col-xs-12 col-sm-2 col-sm-offset-6 c-admin-component-item">
+                            all</li>
                         <li 
-[class.custom-focus]=" choosen_menu( components_current_view, 'mutable' ) "                        
-                        class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
-                            mutable</a></li>
+(click)="set_components_current_view('mutable')"                        
+[class.c-choosen-item]=" choosen_menu( components_current_view, 'mutable' ) "                        
+                        class="col-xs-12 col-sm-2 c-admin-component-item">
+                            mutable</li>
                         <li
-[class.custom-focus]=" choosen_menu( components_current_view, 'immutable' ) "
-                        class="pure-menu-item custom-hover_color"><a href="#" class="pure-menu-link">
-                            immutable</a></li>
+(click)="set_components_current_view('immutable')"                        
+[class.c-choosen-item]=" choosen_menu( components_current_view, 'immutable' ) "
+                        class="col-xs-12 col-sm-2 c-admin-component-item">
+                            immutable</li>
 
                     </ul>
-                </div>
 
             </div>
 
-            <div class="pure-u-5-5 custom-margin-top">
-                
-            <div class="pure-g custom-component-item"
+            <div class="row"
                 *ngFor=" let component of components " > 
 
-                <label class="pure-u-2-5 custom-component-item-label"> 
+                <label class="col-xs-12 col-sm-3 t-a-center-md"> 
                     Name : {{ component.name }} 
                 </label>
-                <label class="pure-u-1-5 custom-component-item-label"> 
+                <label class="col-xs-12 col-sm-3 t-a-center-md"> 
                     Type : {{ component.type || component.mutability }} 
                 </label>
-                <label class="pure-u-1-5 custom-component-item-label">
+                <label class="col-xs-12 col-sm-3 t-a-center-md">
                     Group : {{ component.group || 'none' }} 
                 </label>
-                <input type="button" class="pure-u-1-5 pure-button custom-component-item-button" value="edit"
+                <input type="button" class="col-xs-12 col-sm-3 btn btn-default" value="edit"
                        (click)="edit_fields_component(component)" />  
 
             </div>
-
-
-
-            </div>
-        </div> 
-    </data-wrupper>
+    </div> 
 
 </div> 
 

@@ -28,6 +28,9 @@ export class AppComponent {
     set_current_view( view ){
         this.current_view = view;
     };
+    set_components_current_view( view ) {
+        this.components_current_view = view;
+    };
 
     choosen_menu( a, b ){
         if ( a == b ) return true;
