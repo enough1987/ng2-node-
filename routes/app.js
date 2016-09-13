@@ -16,14 +16,13 @@ router.get('/api/components', function(req, res, next){
 });
 
 router.post('/api/components', function(req, res, next){
-      if ( !req.body.name || !req.body.body) {
-        res.json({error: true, msg: 'no name or body was provided'});
+      if ( !req.body.name || !req.body.group || !req.body.body) {
+        res.json({error: true, msg: 'no name or group or body was provided'});
         return ;
       }
       var post = new db_components({
         name : req.body.name,
-        group : req.body.group || 'mutable',
-        mutability : req.body.mutability,
+        group : req.body.group,
         body : req.body.body
       });
       post.save(function (err, result) {

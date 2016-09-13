@@ -59,15 +59,35 @@ export class AppComponent {
         if ( a == b ) return true;
     }
 
-    create_component(){
-        console.log( this.create_component_name );
-        console.log( this.create_component_group || 'none' );
+    is_component_exist(name){
+        let res = this.components.find( comp => comp.name == name);
+        return !!res;
+    };
 
-        if ( this.create_component_group !== 'none' ){
-            this.components.find( comp => comp.group == this.create_component_group);
+    create_component(){
+        if ( ! this.create_component_name ) {
+            console.log( 'no name was provided ' );
+            return false;
+        }
+        if ( this.is_component_exist(this.create_component_name) ) {
+            console.log( 'Some component has this name' );
+            return false;           
         }
 
-        return this.create_component_name ;
+        if ( ! this.create_component_group ) this.create_component_group = 'none' ;
+        let body = [];
+        if ( this.create_component_group !== 'none' ){
+            let res = this.components.find( comp => comp.group == this.create_component_group);
+            body = res.body;
+        }
+        console.log(
+            this.create_component_name,
+            ' ',
+            this.create_component_group,
+            ' ',
+            body
+        );
+
         this.storageService.insert('/api/components', {
             name : this.create_component_name,
             group : this.create_component_group || 'none',
@@ -78,7 +98,6 @@ export class AppComponent {
                 console.log( res.msg );
                 if ( !res.error ) {
                     this.components = res.components;
-                    this.new_component = this.init_new_component(this.new_component.mutability);
                 }
         });
     };
