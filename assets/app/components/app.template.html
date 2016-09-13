@@ -24,10 +24,12 @@
                         </div>
 
 
-                        <div                                              
+                        <div                                             
                         class="col-xs-12 col-sm-2">
-  <select (change)="set_components_current_view($event.target.value)"
-    class="form-control" >
+  <select
+    (change)="set_components_current_view($event.target.value)"
+    class="form-control input-sm" 
+    id="group_select" >
     <option>none</option>
     <option *ngFor=" let item of [1, 2, 3, 4]" >
         {{ item }}
@@ -41,11 +43,19 @@
 
             </div>
 
+<data-wrapper *ngIf=" components_current_view == 'all' " >            
+
             <div class="row" >
-                add component
+
+                 <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-10  btn btn-default c-admin-btn-add" 
+                        value="create"
+                       (click)="set_components_current_view('create-component')" /> 
+
             </div>
 
-            <div class="row"
+
+
+            <div class="row" 
                 *ngFor=" let component of components " > 
 
                 <label class="col-xs-12 col-sm-4 t-a-center-md"> 
@@ -57,12 +67,60 @@
                 </label>
 
                 <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-2  btn btn-default" value="edit"
-                       (click)="edit_fields_component(component)" />  
+                       (click)="set_components_current_view('edit-component')" />  
 
             </div>
+
+</data-wrapper>
+
+<data-wrapper *ngIf=" components_current_view == 'create-component' " > 
+
+<form class="form-horizontal">
+  <div class="form-group">
+    <label for="create_component_name" class="col-sm-2 control-label">Name</label>
+    <div class="col-sm-5">
+      <input 
+[(ngModel)]="create_component_name"    
+      type="text" class="form-control" id="create_component_name" placeholder="name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="create_component_group" class="col-sm-2 control-label">Group</label>
+    <div class="col-sm-5">
+        <select
+(change)="set_create_component_group_select($event.target.value)"
+    class="form-control" 
+    id="create_component_group_select" >
+    <option>none</option>
+    <option *ngFor=" let item of [1, 2, 3, 4]" >
+        {{ item }}
+    </option>
+  </select>
+    </div>
+    <div class="col-sm-5">
+      <input 
+[(ngModel)]="create_component_group"
+(keyup)="change_create_component_group()"
+      type="text" class="form-control" id="create_component_group" placeholder="group">
+    </div>
+  </div>
+  <div class="form-group">
+    <button (click)="create_component()"
+    class="col-xs-12 col-sm-2 col-sm-offset-4 btn btn-default" type="submit">
+        create component
+    </button>
+  </div>
+
+</form>
+
+</data-wrapper>
+
     </div> 
 
 </div> 
+
+
+<!--
 
 
 <div class="logik-block" style="display:none;" >
@@ -225,3 +283,5 @@
     </div>
 
 </div>
+
+-->

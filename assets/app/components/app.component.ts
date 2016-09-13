@@ -12,11 +12,13 @@ import {ObjectToArrayPipe} from "../pipes/objectToArray.pipe";
     pipes: [ObjectToArrayPipe]
 })
 export class AppComponent {
-    public new_component = this.init_new_component();
+    //public new_component = this.init_new_component();
     public components = [];
-    public component_editable = [];
-    public new_field = { type: "string" };   
-    public new_group = [];
+    //public component_editable = [];
+    //public new_field = { type: "string" };   
+    //public new_group = [];
+    public components_current_view = 'all';
+    public create_component_group = '';
 
     constructor(public storageService: StorageService) {}
 
@@ -25,17 +27,64 @@ export class AppComponent {
         this.get_all_components();
     };
 
+    get_all_components() {
+        this.storageService.select('/api/components' ).
+            subscribe( res => {
+                console.log( 'get - ' , res );
+                if( !res.error ) this.components = res.components;
+            });
+    };
+
     set_current_view( view ){
         this.current_view = view;
     };
     set_components_current_view( view ) {
+        if ( view == 'all') document.getElementById('group_select').value = 'none';
         this.components_current_view = view;
-        console.log( ' item ', view );
+        console.log( ' components_current_view ', this.components_current_view );       
     };
+
+    set_create_component_group_select( value ) {
+        this.create_component_group = value;
+    };
+
+    change_create_component_group() {
+        //console.log( 'keyup val ', this.create_component_group );
+        let res = [1,2,3,4].find( el => el == this.create_component_group) || 'none' ;
+        document.getElementById('create_component_group_select').value = res;
+        console.log( 'create_component_group_select ', res ); 
+    }
 
     choosen_menu( a, b ){
         if ( a == b ) return true;
     }
+
+    create_component(){
+        console.log( this.create_component_name );
+        console.log( this.create_component_group || 'none' );
+
+        if ( this.create_component_group !== 'none' ){
+            this.components.find( comp => comp.group == this.create_component_group);
+        }
+
+        return this.create_component_name ;
+        this.storageService.insert('/api/components', {
+            name : this.create_component_name,
+            group : this.create_component_group || 'none',
+            body : []
+         }).
+            subscribe( res => {
+                console.log( 'post - ' , res );
+                console.log( res.msg );
+                if ( !res.error ) {
+                    this.components = res.components;
+                    this.new_component = this.init_new_component(this.new_component.mutability);
+                }
+        });
+    };
+
+
+/*
 
     init_new_component(mutability = ''){
         return {
@@ -327,7 +376,7 @@ export class AppComponent {
         return false;
     };
     
-
+*/
 
     
 

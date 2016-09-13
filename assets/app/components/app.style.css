@@ -38,6 +38,11 @@
     text-shadow: 0px 1px 0px #1c1c33, 0 0 1em #eee;
 }
 
+.c-admin-btn-add {
+    margin-top: 2em;
+    margin-bottom: 2em;
+}
+
 @media (max-width: 778px) {
     .t-a-center-md {
         text-align: center;
