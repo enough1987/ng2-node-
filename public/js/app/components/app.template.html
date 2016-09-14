@@ -148,8 +148,20 @@
    
     <div class="col-xs-12 col-sm-6">
       <input 
-[(ngModel)]="component_editable.new_field_name"    
-      type="text" class="form-control" placeholder="field name" />
+[(ngModel)]="new_field.name"    
+      type="text" class="col-xs-12 col-sm-6 form-control" placeholder="field name" />
+    </div>
+    <div class="col-xs-12 col-sm-2">
+  <select
+    (change)="set_new_field_type($event.target.value)"
+    class="form-control" 
+    >
+    <option value="string">String</option>
+    <option value="text">Text</option>  
+    <option value="number">Number</option>  
+    <option value="image">Image</option>  
+    <option value="component">Component</option>       
+  </select>
     </div>
     <button (click)="add_new_field()"
             class="col-xs-12 col-sm-3 btn btn-default" >

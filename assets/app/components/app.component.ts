@@ -15,7 +15,7 @@ export class AppComponent {
     //public new_component = this.init_new_component();
     public components = [];
     //public component_editable = [];
-    //public new_field = { type: "string" };   
+    public new_field = { type: "string" };   
     //public new_group = [];
     public components_current_view = 'all';
     public new_component = [];
@@ -73,6 +73,20 @@ export class AppComponent {
     set_edit_component( edit_comp ) {
         this.component_editable = edit_comp;
         this.component_editable.new_name = this.component_editable.name;
+    };
+
+    set_new_field_type( value ) {
+        this.new_field.type = value;
+    };
+
+    add_new_field() {
+        console.log( this.new_field );
+        if ( !this.new_field.name ) {
+            this.set_error_msg( 'No field name was provided ' ); 
+            console.log( 'No name was provided ' );
+            return false;
+        }
+        
     };
 
     create_component(){
