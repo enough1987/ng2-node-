@@ -12,9 +12,10 @@
     </div> 
 
     <div *ngIf=" current_view == 'components' " class="col-xs-12 col-sm-9">
-            <div class="container-fluid" >       
 
-                    <div class="row c-admin-component-menu">
+     
+
+          <div class="row c-admin-component-menu">
                         
                         <div 
 (click)="set_components_current_view('all')"
@@ -39,9 +40,9 @@
                         </div>
 
 
-                    </div>
+           </div>
 
-            </div>
+
 
 <data-wrapper *ngIf=" components_current_view == 'all' " >            
 
@@ -52,8 +53,6 @@
                        (click)="set_components_current_view('create-component')" /> 
 
             </div>
-
-
 
             <div class="row" 
                 *ngFor=" let component of components " > 
@@ -67,42 +66,45 @@
                 </label>
 
                 <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-2  btn btn-default" value="edit"
-                       (click)="set_components_current_view('edit-component')" />  
+                       (click)=" set_components_current_view('edit-component') "
+                       (click)=" set_edit_component(component) " />  
 
             </div>
 
 </data-wrapper>
 
+
 <data-wrapper *ngIf=" components_current_view == 'create-component' " > 
 
 <form class="form-horizontal">
   <div class="form-group">
-    <label for="create_component_name" class="col-sm-2 control-label">Name</label>
+    <label for="new_component_name" class="col-sm-2 control-label">Name</label>
     <div class="col-sm-5">
       <input 
-[(ngModel)]="create_component_name"    
-      type="text" class="form-control" id="create_component_name" placeholder="name">
+[(ngModel)]="new_component.name"    
+      type="text" class="form-control" id="new_component_name" placeholder="name">
     </div>
   </div>
   <div class="form-group">
-    <label for="create_component_group" class="col-sm-2 control-label">Group</label>
+    <label for="new_component_group" class="col-sm-2 control-label">Group</label>
+    <div class="col-sm-5">
+      <input 
+[(ngModel)]="new_component.group"
+(keyup)="change_new_component_group()"
+      type="text" class="form-control" id="new_component_group" placeholder="group">
+    </div>
     <div class="col-sm-5">
         <select
-(change)="set_create_component_group_select($event.target.value)"
+(change)="set_new_component_group_select($event.target.value)"
     class="form-control" 
-    id="create_component_group_select" >
+    id="new_component_group_select" >
     <option>none</option>
     <option *ngFor=" let item of [1, 2, 3, 4]" >
         {{ item }}
     </option>
   </select>
     </div>
-    <div class="col-sm-5">
-      <input 
-[(ngModel)]="create_component_group"
-(keyup)="change_create_component_group()"
-      type="text" class="form-control" id="create_component_group" placeholder="group">
-    </div>
+
   </div>
   <div class="form-group">
     <button (click)="create_component()"
@@ -114,6 +116,38 @@
 </form>
 
 </data-wrapper>
+
+
+<data-wrapper *ngIf=" components_current_view == 'edit-component' " > 
+
+<div class="row" >
+    <button (click)="change_component()"
+    class="col-xs-12 col-sm-2 col-sm-offset-2 btn btn-default" type="submit">
+        change component
+    </button>
+    <button (click)="copy_component()"
+    class="col-xs-12 col-sm-2 col-sm-offset-1 btn btn-default" type="submit">
+        copy component
+    </button>
+    <button (click)="delete_component()"
+    class="col-xs-12 col-sm-2 col-sm-offset-1 btn btn-default" type="submit">
+        delete component
+    </button>        
+</div>
+
+        <pre>
+
+            {{ component_editable | json }}
+
+        </pre>
+
+</data-wrapper>
+
+
+<data-wrapper *ngIf=" error_msg " >
+   <p class="admin-error-msg" > {{ error_msg }} </p>
+</data-wrapper>
+
 
     </div> 
 

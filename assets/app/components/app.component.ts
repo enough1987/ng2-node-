@@ -18,7 +18,8 @@ export class AppComponent {
     //public new_field = { type: "string" };   
     //public new_group = [];
     public components_current_view = 'all';
-    public create_component_group = '';
+    public new_component = [];
+    //public create_component_group = '';
 
     constructor(public storageService: StorageService) {}
 
@@ -44,60 +45,76 @@ export class AppComponent {
         console.log( ' components_current_view ', this.components_current_view );       
     };
 
-    set_create_component_group_select( value ) {
-        this.create_component_group = value;
+    set_new_component_group_select( value ) {
+        this.new_component.group = value;
     };
 
-    change_create_component_group() {
+    change_new_component_group() {
         //console.log( 'keyup val ', this.create_component_group );
-        let res = [1,2,3,4].find( el => el == this.create_component_group) || 'none' ;
-        document.getElementById('create_component_group_select').value = res;
-        console.log( 'create_component_group_select ', res ); 
-    }
+        let res = [1,2,3,4].find( el => el == this.new_component.group) || 'none' ;
+        document.getElementById('new_component_group_select').value = res;
+        console.log( 'new_component_group_select ', res ); 
+    };
 
     choosen_menu( a, b ){
         if ( a == b ) return true;
-    }
+    };
+
+    set_error_msg( error_msg ){
+        this.error_msg = error_msg;
+        setTimeout( ()=> this.error_msg = '', 3000 );
+    };
 
     is_component_exist(name){
         let res = this.components.find( comp => comp.name == name);
         return !!res;
     };
 
+    set_edit_component( edit_comp ) {
+        this.component_editable = edit_comp;
+    };
+
     create_component(){
-        if ( ! this.create_component_name ) {
-            console.log( 'no name was provided ' );
+        if ( ! this.new_component.name ) {
+            this.set_error_msg( ' No name was provided ' );
+            console.log( 'No name was provided ' );
             return false;
         }
-        if ( this.is_component_exist(this.create_component_name) ) {
+        if ( this.is_component_exist(this.new_component.name) ) {
+            this.set_error_msg( ' Some component has this name ' ); 
             console.log( 'Some component has this name' );
             return false;           
         }
 
-        if ( ! this.create_component_group ) this.create_component_group = 'none' ;
+        if ( ! this.new_component.group ) this.new_component.group = 'none' ;
         let body = [];
-        if ( this.create_component_group !== 'none' ){
-            let res = this.components.find( comp => comp.group == this.create_component_group);
-            body = res.body;
+        if ( this.new_component.group !== 'none' ){
+            let res = this.components.find( comp => comp.group == this.new_component.group);
+            if ( res ) body = res.body ;
         }
         console.log(
-            this.create_component_name,
+            this.new_component.name,
             ' ',
-            this.create_component_group,
+            this.new_component.group,
             ' ',
             body
         );
 
+
         this.storageService.insert('/api/components', {
-            name : this.create_component_name,
-            group : this.create_component_group || 'none',
+            name : this.new_component.name,
+            group : this.new_component.group || 'none',
             body : []
          }).
             subscribe( res => {
                 console.log( 'post - ' , res );
-                console.log( res.msg );
                 if ( !res.error ) {
                     this.components = res.components;
+                    let edit_comp = this.components.find( comp => comp.name == this.new_component.name);
+                    if ( edit_comp ) {
+                        this.set_components_current_view('edit-component');
+                        this.set_edit_component( edit_comp );
+                    }
                 }
         });
     };

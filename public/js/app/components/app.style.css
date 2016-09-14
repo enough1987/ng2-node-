@@ -43,6 +43,12 @@
     margin-bottom: 2em;
 }
 
+.admin-error-msg {
+    text-align: center;
+    color: #5a2c10;
+    font-style: oblique;
+}
+
 @media (max-width: 778px) {
     .t-a-center-md {
         text-align: center;
