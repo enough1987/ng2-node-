@@ -49,8 +49,24 @@
     font-style: oblique;
 }
 
+.admin-edit-info {
+    margin-bottom: 2em;
+}
+
+.admin-edit-btn-group {
+    margin: 1em 0%;   
+}
+
+.add-field-btn {
+    margin-left: 4%;
+}
+
+.t-a-left {
+    text-align: left;
+}
+
 @media (max-width: 778px) {
-    .t-a-center-md {
+    .t-a-center-sm {
         text-align: center;
     }
 }

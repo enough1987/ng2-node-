@@ -72,6 +72,7 @@ export class AppComponent {
 
     set_edit_component( edit_comp ) {
         this.component_editable = edit_comp;
+        this.component_editable.new_name = this.component_editable.name;
     };
 
     create_component(){
