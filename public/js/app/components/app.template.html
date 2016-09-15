@@ -1,7 +1,7 @@
 
 <div class="container c-main-admin-block">
 
-    <div class="col-xs-12 col-sm-3">
+    <div class="col-xs-12 col-sm-2">
         <ul class="">
             <li (click)="set_current_view('components')"
                 [class.c-choosen-item]=" choosen_menu( current_view, 'components' ) "
@@ -11,7 +11,7 @@
         </ul>
     </div> 
 
-    <div *ngIf=" current_view == 'components' " class="col-xs-12 col-sm-9">
+    <div *ngIf=" current_view == 'components' " class="col-xs-12 col-sm-10">
 
      
 
@@ -171,6 +171,71 @@
   </div>
 
 </form>
+
+<p class="t-a-center no-field" 
+ *ngIf=" ! component_editable?.body?.length " >
+    No field was created
+</p>
+
+
+  <p class=" type-field-header "
+    *ngIf=" show_if_type_field_exist( 'string' ) " > 
+        String fields : 
+  </p>
+  <data-wrapper *ngFor=" let field of component_editable.body" >
+  <div 
+    *ngIf=" field.type === 'string' " 
+    class="row">
+
+    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
+    <div class="col-xs-12 col-sm-6">
+      <input 
+[(ngModel)]="field.value"    
+      type="text" class="form-control" id="field_name" />
+    </div>
+
+  </div>
+  </data-wrapper>
+
+
+  <p class=" type-field-header "
+    *ngIf=" show_if_type_field_exist( 'text' ) " > 
+        Text fields : 
+  </p>
+  <data-wrapper *ngFor=" let field of component_editable.body" >
+  <div 
+    *ngIf=" field.type === 'text' " 
+    class="row">
+
+    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
+    <div class="col-xs-12 col-sm-6">
+        <textarea 
+[(ngModel)]="field.value" 
+        class="form-control" rows="3"></textarea>
+    </div>
+
+  </div>
+  </data-wrapper>
+
+
+  <p class=" type-field-header "
+    *ngIf=" show_if_type_field_exist( 'number' ) " > 
+        Number fields : 
+  </p>
+  <data-wrapper *ngFor=" let field of component_editable.body" >
+  <div 
+    *ngIf=" field.type === 'number' " 
+    class="row">
+
+    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
+    <div class="col-xs-12 col-sm-6">
+      <input 
+[(ngModel)]="field.value"    
+      type="number" class="form-control" id="field_name" placeholder="value" />
+    </div>
+
+  </div>
+  </data-wrapper>
 
 
 <div class="row admin-edit-btn-group" >

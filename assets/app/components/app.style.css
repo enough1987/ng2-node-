@@ -65,6 +65,21 @@
     text-align: left;
 }
 
+.c-label {
+    padding: 6px 16px;
+}
+
+.t-a-center {
+    text-align: center;
+}
+.no-field {
+    margin: 2em 0;
+}
+
+.type-field-header {
+    margin-bottom: 0.2em;
+}
+
 @media (max-width: 778px) {
     .t-a-center-sm {
         text-align: center;

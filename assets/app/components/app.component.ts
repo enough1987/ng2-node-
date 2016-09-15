@@ -79,14 +79,41 @@ export class AppComponent {
         this.new_field.type = value;
     };
 
+    show_if_type_field_exist( type ) {
+         return this.component_editable.body.find( field => field.type == type );
+    };
+
+    is_field_exist(name){
+        return this.component_editable.body.find( field => field.name == name );
+    };  
+
     add_new_field() {
-        console.log( this.new_field );
+        //console.log( this.new_field,  this.component_editable );
+
         if ( !this.new_field.name ) {
             this.set_error_msg( 'No field name was provided ' ); 
             console.log( 'No name was provided ' );
             return false;
         }
-        
+        if ( this.is_field_exist(this.new_field.name) ) {
+            this.set_error_msg( 'One field has this name ' ); 
+            console.log( 'One filed has this name' );
+            return false;            
+        }
+        this.field._id = this.create_guid();  
+        this.component_editable.body = [...this.component_editable.body, this.new_field];
+        this.new_field = { type: "string" };
+        //console.log(  this.component_editable.body );
+        this.storageService.update('/api/components',{
+            id : this.component_editable._id,
+            name : this.component_editable.name,
+            group : this.component_editable.group,
+            body : this.component_editable.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
     };
 
     create_component(){
@@ -96,8 +123,8 @@ export class AppComponent {
             return false;
         }
         if ( this.is_component_exist(this.new_component.name) ) {
-            this.set_error_msg( ' Some component has this name ' ); 
-            console.log( 'Some component has this name' );
+            this.set_error_msg( 'One component has this name ' ); 
+            console.log( 'One component has this name' );
             return false;           
         }
 
