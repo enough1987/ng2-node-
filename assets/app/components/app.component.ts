@@ -87,6 +87,15 @@ export class AppComponent {
         return this.component_editable.body.find( field => field.name == name );
     };  
 
+    all_components_name (){
+        let comp_names = [];
+        this.components.forEach(function(el){
+            comp_names = [...comp_names, el.name ];
+        });
+        //console.log( comp_names );
+        return comp_names; 
+    };
+
     add_new_field() {
         //console.log( this.new_field,  this.component_editable );
 
@@ -100,9 +109,12 @@ export class AppComponent {
             console.log( 'One filed has this name' );
             return false;            
         }
-        this.field._id = this.create_guid();  
+
+        this.new_field._id = this.create_guid();  
         this.component_editable.body = [...this.component_editable.body, this.new_field];
-        this.new_field = { type: "string" };
+        this.new_field = { type: this.new_field.type };
+        document.getElementById('new-field-id').value = this.new_field.type;
+
         //console.log(  this.component_editable.body );
         this.storageService.update('/api/components',{
             id : this.component_editable._id,
@@ -113,7 +125,23 @@ export class AppComponent {
             subscribe( res => {
                 console.log( 'put - ' , res );
                 if ( !res.error ) this.components = res.components;
+                console.log( ' b ', this.component_editable.body );
         });
+    };
+
+    delete_field( id ){
+        console.log( this.component_editable.body );
+        this.component_editable.body.forEach( (el, idx, arr) => { 
+            if(el._id === id ) {
+                this.component_editable.body.splice(idx, 1);
+            } 
+        });
+        console.log( this.component_editable.body ) ;
+    };
+
+    set_component_field_value( field, name ){
+        let comp = this.components.find( comp => comp.name === name && this.component_editable.name !== name );
+        field.value = comp;
     };
 
     create_component(){
@@ -485,3 +513,7 @@ export class AppComponent {
 
 
 }
+
+
+
+

@@ -154,7 +154,8 @@
     <div class="col-xs-12 col-sm-2">
   <select
     (change)="set_new_field_type($event.target.value)"
-    class="form-control" 
+    class="form-control"
+    id="new-field-id" 
     >
     <option value="string">String</option>
     <option value="text">Text</option>  
@@ -193,6 +194,10 @@
 [(ngModel)]="field.value"    
       type="text" class="form-control" id="field_name" />
     </div>
+    <button (click)="delete_field(field._id)"
+    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
+        delete
+    </button>
 
   </div>
   </data-wrapper>
@@ -213,6 +218,10 @@
 [(ngModel)]="field.value" 
         class="form-control" rows="3"></textarea>
     </div>
+    <button (click)="delete_field(field._id)"
+    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
+        delete
+    </button>
 
   </div>
   </data-wrapper>
@@ -231,12 +240,69 @@
     <div class="col-xs-12 col-sm-6">
       <input 
 [(ngModel)]="field.value"    
-      type="number" class="form-control" id="field_name" placeholder="value" />
+      type="number" class="form-control" id="field_name"  />
     </div>
+    <button (click)="delete_field(field._id)"
+    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
+        delete
+    </button>
 
   </div>
   </data-wrapper>
 
+
+  <p class=" type-field-header "
+    *ngIf=" show_if_type_field_exist( 'image' ) " > 
+        Image fields : 
+  </p>
+  <data-wrapper *ngFor=" let field of component_editable.body" >
+  <div 
+    *ngIf=" field.type === 'image' " 
+    class="row">
+
+    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
+    <div class="col-xs-12 col-sm-6">
+      <input 
+[(ngModel)]="field.value"    
+      type="number" class="form-control" id="field_name" />
+    </div>
+    <button (click)="delete_field(field._id)"
+    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
+        delete
+    </button>
+
+  </div>
+  </data-wrapper>
+
+  <p class=" type-field-header "
+    *ngIf=" show_if_type_field_exist( 'component' ) " > 
+        Component fields : 
+  </p>
+  <data-wrapper *ngFor=" let field of component_editable.body" >
+  <div 
+    *ngIf=" field.type === 'component' " 
+    class="row">
+
+    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
+    <div class="col-xs-12 col-sm-6">
+        <select
+            (change)="set_component_field_value(field, $event.target.value)"
+            class="form-control" 
+            >
+            <option selected ></option>
+            <option *ngFor=" let name of all_components_name() " >
+                {{ name }}
+            </option>
+      
+        </select>
+    </div>
+    <button (click)="delete_field(field._id)"
+    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
+        delete
+    </button>
+
+  </div>
+  </data-wrapper>
 
 <div class="row admin-edit-btn-group" >
     <button (click)="change_component()"
