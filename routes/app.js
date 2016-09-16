@@ -91,7 +91,7 @@ router.delete('/api/components', function(req, res, next){
       });
 });
 
-router.put('/api/all/components', function(req, res, next){    
+router.put('/api/components/group/add', function(req, res, next){    
       if ( !req.body.group || !req.body.field ) {
         res.json({error: true, msg: 'no group or field was provided'});
         return ;
@@ -99,9 +99,9 @@ router.put('/api/all/components', function(req, res, next){
       //console.log( req.body.group );
       //console.log( req.body.field );
       db_components.find({ group: req.body.group }).then(function(doc){
-        console.log( doc );
+        //console.log( doc );
         doc.forEach(function(el, idx, arr){
-          console.log( 'el - ' , el );
+          //console.log( 'el - ' , el );
           el.body.push( req.body.field );
           el.save(function (err) {
             if(err) console.error('ERROR!');
@@ -119,7 +119,42 @@ router.put('/api/all/components', function(req, res, next){
       });
 });
 
+router.put('/api/components/group/delete', function(req, res, next){    
+      if ( !req.body.group || !req.body.id ) {
+        res.json({error: true, msg: 'no group or id was provided'});
+        return ;
+      }
+      console.log( req.body );
+      return;
+      //console.log( req.body.group );
+      //console.log( req.body.field );
+      db_components.find({ group: req.body.group }).then(function(doc){
+        //console.log( doc );
+        doc.forEach(function(el, idx, arr){
+          //console.log( 'el - ' , el );
+          el.body.forEach(function(el, idx, arr){
+            if( el._id == id ){
+                arr.splice(idx,1);
+                el.save(function (err) {
+                  if (err) console.error('ERROR!');
+                  if (idx === arr.length - 1){
+                    var data = db_components.find();
+                    data.then(function(doc){  
+                      res.json({
+                        error : true,
+                        components : doc
+                      });
+                    }); 
+                  }  // last iteration
+                }); // save
+            };
+          });
+        }); // forEach   
+      });
+});
+
 router.get('*', function(req, res, next) {
+    console.log( 'go - 1');
     res.render('index');
 });
 

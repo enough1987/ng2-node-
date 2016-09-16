@@ -136,7 +136,7 @@ export class AppComponent {
     };
 
     add_new_field_to_group() {
-                this.storageService.update('/api/all/components',{
+                this.storageService.update('/api/components/group/add',{
                         group : this.component_editable.group,
                         field : this.new_field
                 }).
@@ -153,6 +153,11 @@ export class AppComponent {
                 this.component_editable.body.splice(idx, 1);
             } 
         });
+
+        if ( this.component_editable.group != 'none') {
+                this.delete_field_to_group(id);
+                return false;
+        }
         
         //console.log( this.component_editable.body ) ;      
         this.storageService.update('/api/components',{
@@ -166,6 +171,18 @@ export class AppComponent {
                 if ( !res.error ) this.components = res.components;
         });
 
+    };
+
+    delete_field_to_group(id) {
+        //console.log( this.component_editable.body ) ;      
+        this.storageService.update('/api/components/group/delete',{
+            group : this.component_editable.group, 
+            id: id
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
     };
 
 
@@ -199,14 +216,6 @@ export class AppComponent {
             let res = this.components.find( comp => comp.group == this.new_component.group);
             if ( res ) body = res.body ;
         }
-        console.log(
-            this.new_component.name,
-            ' ',
-            this.new_component.group,
-            ' ',
-            body
-        );
-
 
         this.storageService.insert('/api/components', {
             name : this.new_component.name,
