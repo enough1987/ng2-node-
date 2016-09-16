@@ -112,10 +112,14 @@ export class AppComponent {
         }
 
         this.new_field._id = this.create_guid();  
+        //document.getElementById('new-field-id').value = this.new_field.type;
+        if ( this.component_editable.group != 'none') {
+                this.add_new_field_to_group();
+                this.new_field = { type: this.new_field.type };
+                return false;
+        }
         this.component_editable.body = [...this.component_editable.body, this.new_field];
         this.new_field = { type: this.new_field.type };
-        document.getElementById('new-field-id').value = this.new_field.type;
-
         //console.log(  this.component_editable.body );
         this.storageService.update('/api/components',{
             id : this.component_editable._id,
@@ -130,6 +134,17 @@ export class AppComponent {
         });
     };
 
+    add_new_field_to_group() {
+                this.storageService.update('/api/all/components',{
+                        group : this.component_editable.group,
+                        field : this.new_field
+                }).
+                subscribe( res => {
+                        console.log( 'all put - ' , res );
+                        //if ( !res.error ) this.components = res.components;
+                });
+    };
+
     delete_field( id ){
         //console.log( this.component_editable.body );
         this.component_editable.body.forEach( (el, idx, arr) => { 
@@ -137,6 +152,7 @@ export class AppComponent {
                 this.component_editable.body.splice(idx, 1);
             } 
         });
+        
         //console.log( this.component_editable.body ) ;      
         this.storageService.update('/api/components',{
             id : this.component_editable._id,
@@ -148,6 +164,7 @@ export class AppComponent {
                 console.log( 'put - ' , res );
                 if ( !res.error ) this.components = res.components;
         });
+
     };
 
 

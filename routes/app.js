@@ -91,6 +91,29 @@ router.delete('/api/components', function(req, res, next){
       });
 });
 
+router.put('/api/all/components', function(req, res, next){    
+      if ( !req.body.group || !req.body.field ) {
+        res.json({error: true, msg: 'no group or field was provided'});
+        return ;
+      }
+      //console.log( req.body.group );
+      //console.log( req.body.field );
+      db_components.find({ group: req.body.group }).then(function(doc){
+        console.log( doc );
+        doc.forEach(function(el, idx, arr){
+          console.log( 'el - ' , el );
+          el.body.push( req.body.field );
+          el.save(function (err) {
+            if(err) console.error('ERROR!');  
+          });
+        });
+        res.json({
+          error : false,
+          components : doc
+        });        
+      });
+});
+
 router.get('*', function(req, res, next) {
     res.render('index');
 });
