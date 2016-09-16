@@ -76,6 +76,10 @@
     margin: 2em 0;
 }
 
+.small-marg-top {
+    margin-top: 1em;
+}
+
 .type-field-header {
     margin-bottom: 0.2em;
 }

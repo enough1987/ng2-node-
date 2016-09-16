@@ -136,15 +136,6 @@
 <form class="form-horizontal">
 
   <div class="form-group">
-    <label for="component_editable_name" class="col-sm-3 control-label t-a-left"> New name :</label>
-    <div class="col-xs-12 col-sm-6">
-      <input 
-[(ngModel)]="component_editable.new_name"    
-      type="text" class="form-control" id="component_editable_name" placeholder="name" />
-    </div>
-  </div>
-
-  <div class="form-group">
    
     <div class="col-xs-12 col-sm-6">
       <input 
@@ -166,7 +157,7 @@
     </div>
     <button (click)="add_new_field()"
             class="col-xs-12 col-sm-3 btn btn-default" >
-            Add new field
+            Set new field
     </button> 
 
   </div>
@@ -304,22 +295,35 @@
   </div>
   </data-wrapper>
 
+  <div class="row small-marg-top">
+    <label for="component_editable_name" class="col-xs-12 col-sm-3 t-a-left c-label"> New name :</label>
+    <div class="col-xs-12 col-sm-6">
+      <input 
+[(ngModel)]="component_editable.new_name"    
+      type="text" class="form-control" id="component_editable_name" placeholder="name" />
+    </div>
+  </div>
+
 <div class="row admin-edit-btn-group" >
     <button (click)="change_component()"
     class="col-xs-12 col-sm-3 btn btn-default" type="submit">
         change component
     </button>
     <button (click)="copy_component()"
-    class="col-xs-12 col-sm-3 col-sm-offset-1 btn btn-default" type="submit">
+    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
         copy component
     </button>
     <button (click)="delete_component()"
-    class="col-xs-12 col-sm-3 col-sm-offset-1 btn btn-default" type="submit">
+    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
         delete component
+    </button>    
+    <button (click)="show_json_of_edit_component()"
+    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
+        show json
     </button>       
 </div>
 
-        <pre>
+        <pre *ngIf=" json_of_edit_component_is_visible " >
 
             {{ component_editable | json }}
 

@@ -67,7 +67,8 @@ export class AppComponent {
 
     is_component_exist(name){
         let res = this.components.find( comp => comp.name == name);
-        return !!res;
+        //console.log(res);
+        return res;
     };
 
     set_edit_component( edit_comp ) {
@@ -130,19 +131,37 @@ export class AppComponent {
     };
 
     delete_field( id ){
-        console.log( this.component_editable.body );
+        //console.log( this.component_editable.body );
         this.component_editable.body.forEach( (el, idx, arr) => { 
             if(el._id === id ) {
                 this.component_editable.body.splice(idx, 1);
             } 
         });
-        console.log( this.component_editable.body ) ;
+        //console.log( this.component_editable.body ) ;      
+        this.storageService.update('/api/components',{
+            id : this.component_editable._id,
+            name : this.component_editable.name,
+            group : this.component_editable.group,
+            body : this.component_editable.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
     };
+
+
 
     set_component_field_value( field, name ){
         let comp = this.components.find( comp => comp.name === name && this.component_editable.name !== name );
         field.value = comp;
     };
+
+    show_json_of_edit_component(){
+        this.json_of_edit_component_is_visible = !this.json_of_edit_component_is_visible;
+    };
+
+    
 
     create_component(){
         if ( ! this.new_component.name ) {
@@ -189,6 +208,65 @@ export class AppComponent {
         });
     };
 
+    change_component(component){
+
+        if (  this.component_editable.new_name != this.component_editable.name && 
+              this.is_component_exist(this.component_editable.new_name) ) {
+            this.set_error_msg( 'One component has this name ' ); 
+            console.log( 'One component has this name' );
+            return false;           
+        }
+        if( this.component_editable.new_name != this.component_editable.name ) {
+            this.component_editable.name = this.component_editable.new_name; 
+        }   
+        this.storageService.update('/api/components',{
+            id : this.component_editable._id,
+            name : this.component_editable.name,
+            group : this.component_editable.group,
+            body : this.component_editable.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+        });
+    };
+
+    copy_component() {
+        if ( !this.component_editable.new_name ||
+              this.component_editable.name == this.component_editable.new_name ) {
+            this.set_error_msg( 'No new name was provided ' ); 
+            console.log( 'No new name was provided ' );
+            return false;    
+        }
+        if( this.is_component_exist(this.component_editable.new_name)
+            ){
+            this.set_error_msg( 'One component has this name ' ); 
+            console.log( 'One component has this name' );
+            return;
+        }
+        this.storageService.insert('/api/components', {
+            id : this.component_editable._id,
+            name : this.component_editable.new_name,
+            group : this.component_editable.group,
+            body : this.component_editable.body
+         }).
+            subscribe( res => {
+                console.log( 'post - ' , res );
+                if ( !res.error ) this.components = res.components;
+         });
+    };
+
+    
+    delete_component() {
+        this.storageService.delete('/api/components', this.component_editable._id).
+            subscribe( res => {
+                console.log( 'delete - ' , res );
+                if ( !res.error ) {
+                    this.components = res.components;
+                    this.set_components_current_view( 'all' );
+                }
+            });
+    };
 
 /*
 
@@ -515,5 +593,64 @@ export class AppComponent {
 }
 
 
+/*
 
 
+let cvt_r_n = (() => {
+
+  var nut = [1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1];
+  var rom = ['M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'];
+  var all = {I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+
+  var cvt_r_n_to_roman = (arabic) => {
+    let res = '';  
+    nut.forEach( (el, idx, arr ) =>{
+        while ( arabic >= nut[idx] ) {
+            res += rom[idx];
+            arabic -= nut[idx];
+        }
+    });
+    return res;
+  };
+
+  var cvt_r_n_form_roman = (roman) => {
+      let res = 0;
+      let l = roman.length;
+      while (l--) {
+        if ( all[roman[l]] < all[roman[l+1]] ) { 
+            res -= all[roman[l]];   
+        } else { 
+            res += all[roman[l]] 
+        }
+      }
+      
+      return res;
+  };
+
+  return (num) => {
+    if ( typeof num === 'number') return cvt_r_n_to_roman( num );
+    if ( typeof num === 'string') return cvt_r_n_form_roman( num.toUpperCase() );
+  };
+
+})();
+
+
+console.log( cvt_r_n(3003) );
+console.log( cvt_r_n(443) );
+console.log( cvt_r_n(69) );
+console.log( cvt_r_n(2) );
+console.log( cvt_r_n(99) );
+console.log( cvt_r_n(34) );
+console.log( cvt_r_n(456) );
+
+console.log('-------------------');
+
+console.log( cvt_r_n('MMMIII') );
+console.log( cvt_r_n('CDXLIII') );
+console.log( cvt_r_n('LXIX') );
+console.log( cvt_r_n('II') );
+console.log( cvt_r_n('XCIX') );
+console.log( cvt_r_n('XXXIV') );
+console.log( cvt_r_n('CDLVI') );
+
+*/
