@@ -104,13 +104,18 @@ router.put('/api/all/components', function(req, res, next){
           console.log( 'el - ' , el );
           el.body.push( req.body.field );
           el.save(function (err) {
-            if(err) console.error('ERROR!');  
-          });
-        });
-        res.json({
-          error : false,
-          components : doc
-        });        
+            if(err) console.error('ERROR!');
+            if (idx === arr.length - 1){
+              var data = db_components.find();
+              data.then(function(doc){  
+                  res.json({
+                    error : false,
+                    components : doc
+                  });
+              }); 
+             }  // last iteration
+           }); // save
+        }); // forEach   
       });
 });
 

@@ -113,12 +113,13 @@ export class AppComponent {
 
         this.new_field._id = this.create_guid();  
         //document.getElementById('new-field-id').value = this.new_field.type;
+        this.component_editable.body = [...this.component_editable.body, this.new_field];
+
         if ( this.component_editable.group != 'none') {
                 this.add_new_field_to_group();
                 this.new_field = { type: this.new_field.type };
                 return false;
         }
-        this.component_editable.body = [...this.component_editable.body, this.new_field];
         this.new_field = { type: this.new_field.type };
         //console.log(  this.component_editable.body );
         this.storageService.update('/api/components',{
@@ -141,7 +142,7 @@ export class AppComponent {
                 }).
                 subscribe( res => {
                         console.log( 'all put - ' , res );
-                        //if ( !res.error ) this.components = res.components;
+                        if ( !res.error ) this.components = res.components;
                 });
     };
 
