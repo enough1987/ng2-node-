@@ -125,30 +125,31 @@ router.put('/api/components/group/delete', function(req, res, next){
         return ;
       }
       console.log( req.body );
-      return;
-      //console.log( req.body.group );
-      //console.log( req.body.field );
       db_components.find({ group: req.body.group }).then(function(doc){
         //console.log( doc );
         doc.forEach(function(el, idx, arr){
-          //console.log( 'el - ' , el );
-          el.body.forEach(function(el, idx, arr){
-            if( el._id == id ){
-                arr.splice(idx,1);
-                el.save(function (err) {
+          console.log( 'el - ' ,  idx , arr.length , el.body.length );
+          for (var i = 0, len = el.body.length; i < len; i++) {
+            console.log( ' f - ', i , ' ' , el.body[i]._id , id );
+            if( el.body[i]._id !== id ) return;
+            console.log( f._id )
+            el.body.splice(i,1);
+            return ;
+            el.body[i].save(function (err) {
                   if (err) console.error('ERROR!');
-                  if (idx === arr.length - 1){
-                    var data = db_components.find();
-                    data.then(function(doc){  
+                  console.log(idx === arr.length - 1 , 
+                      i === a.length - 1 );
+                  if ( idx !== arr.length - 1 && 
+                       i !== a.length - 1 ) return;
+                  var data = db_components.find();
+                  data.then(function(doc){  
                       res.json({
                         error : true,
                         components : doc
                       });
-                    }); 
-                  }  // last iteration
-                }); // save
-            };
-          });
+                  }); 
+            }); // save        
+          } // foreach
         }); // forEach   
       });
 });
