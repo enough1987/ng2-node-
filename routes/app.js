@@ -119,38 +119,64 @@ router.put('/api/components/group/add', function(req, res, next){
       });
 });
 
-router.put('/api/components/group/delete', function(req, res, next){    
+router.put('/api/components/group/delete', function(req, res, next){
+      console.time('appLifeTime');    
       if ( !req.body.group || !req.body.id ) {
         res.json({error: true, msg: 'no group or id was provided'});
         return ;
       }
       console.log( req.body );
       db_components.find({ group: req.body.group }).then(function(doc){
-        //console.log( doc );
-        doc.forEach(function(el, idx, arr){
-          console.log( 'el - ' ,  idx , arr.length , el.body.length );
-          for (var i = 0, len = el.body.length; i < len; i++) {
-            console.log( ' f - ', i , ' ' , el.body[i]._id , id );
-            if( el.body[i]._id !== id ) return;
-            console.log( f._id )
-            el.body.splice(i,1);
-            return ;
-            el.body[i].save(function (err) {
-                  if (err) console.error('ERROR!');
-                  console.log(idx === arr.length - 1 , 
-                      i === a.length - 1 );
-                  if ( idx !== arr.length - 1 && 
-                       i !== a.length - 1 ) return;
-                  var data = db_components.find();
-                  data.then(function(doc){  
-                      res.json({
-                        error : true,
-                        components : doc
-                      });
-                  }); 
-            }); // save        
-          } // foreach
-        }); // forEach   
+
+        for ( var index = 0 ; index < doc.length ; index++ ) {
+          var component = doc[index];
+          for ( var idx = 0 ; idx < component.body.length ; idx++ ){
+            var field = component.body[idx];
+            console.log( index , doc.length-1 , ' \ ' , 
+              idx , component.body.length-1 , ' \ ' 
+            );
+            console.log( ' -------------- ');
+            if ( field._id === req.body.id ) {
+                 component.body.splice(idx, 1);
+            }
+
+            if( idx !== component.body.length-1 ) continue;
+            console.log( ' last iteration ' );
+          } // for doc[index].body
+        } // for doc
+        console.log( ' END ' );
+
+/*
+          doc.forEach(function(component, index, components){
+            component.body.forEach(function(field, idx, field_body){
+
+              concole.log ( field._id , id );
+
+              if ( field._id === id ) {
+                  field_body.splice(idx, 1);
+
+              console.log( index , components.length-1 , index === components.length-1 ,
+                   idx , field_body.length-1 , idx === field_body.length-1 )
+
+                if( idx === field_body.length-1 ) {
+                   console.log( ' before save ' );
+                   component.save(function (err) {  
+                     if(err) console.error('ERROR!');
+                     console.log( ' after save ' );
+                     console.timeEnd('appLifeTime');
+                     if ( index === components.length-1 ) {
+                        res.json({
+                            error : true,
+                            components : doc
+                        });
+                     }
+                   });
+                 }
+               } 
+            });
+          });
+*/
+ 
       });
 });
 
