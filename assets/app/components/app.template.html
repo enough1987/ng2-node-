@@ -85,7 +85,7 @@
             </div>
 
             <div class="row" 
-                *ngFor=" let component of components | sortBy : 'group' " > 
+                *ngFor=" let component of components | sortByGroup : sorted_by_value " > 
 
                 <label class="col-xs-12 col-sm-4 "> 
                     Name : {{ component.name }} 

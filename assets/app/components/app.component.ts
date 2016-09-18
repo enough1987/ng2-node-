@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import {StorageService} from "../services/storage.service";
 
 import {ObjectToArrayPipe} from "../pipes/objectToArray.pipe";
-import {sortByPipe} from "../pipes/sortBy.pipe";
+import {sortByGroupPipe} from "../pipes/sortByGroup.pipe";
 
 @Component({
     moduleId: module.id, 
@@ -11,7 +11,7 @@ import {sortByPipe} from "../pipes/sortBy.pipe";
     templateUrl: 'app.template.html',
     styleUrls: ['app.style.css'],
     providers: [StorageService],
-    pipes: [ObjectToArrayPipe, sortByPipe]
+    pipes: [ObjectToArrayPipe, sortByGroupPipe]
 })
 export class AppComponent {
     //public new_component = this.init_new_component();
@@ -50,7 +50,7 @@ export class AppComponent {
     set_sorted_components_current_view( sort ){
         this.components_current_view = 'sorted_view';
         this.sorted_by_value = sort; 
-        console.log( ' components_current_view ', this.components_current_view ); 
+        console.log( this.sorted_by_value ); 
     }
 
     set_new_component_group_select( value ) {
