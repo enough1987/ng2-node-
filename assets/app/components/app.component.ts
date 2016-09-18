@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
 import {StorageService} from "../services/storage.service";
+
 import {ObjectToArrayPipe} from "../pipes/objectToArray.pipe";
+import {sortByPipe} from "../pipes/sortBy.pipe";
 
 @Component({
     moduleId: module.id, 
@@ -9,7 +11,7 @@ import {ObjectToArrayPipe} from "../pipes/objectToArray.pipe";
     templateUrl: 'app.template.html',
     styleUrls: ['app.style.css'],
     providers: [StorageService],
-    pipes: [ObjectToArrayPipe]
+    pipes: [ObjectToArrayPipe, sortByPipe]
 })
 export class AppComponent {
     //public new_component = this.init_new_component();
@@ -44,6 +46,12 @@ export class AppComponent {
         this.components_current_view = view;
         console.log( ' components_current_view ', this.components_current_view );       
     };
+
+    set_sorted_components_current_view( sort ){
+        this.components_current_view = 'sorted_view';
+        this.sorted_by_value = sort; 
+        console.log( ' components_current_view ', this.components_current_view ); 
+    }
 
     set_new_component_group_select( value ) {
         this.new_component.group = value;
@@ -106,7 +114,7 @@ export class AppComponent {
                 groups_names = [ ...groups_names, el.group ];
             }
         });
-        console.log( groups_names );
+        //console.log( groups_names );
         return groups_names; 
     };
 
