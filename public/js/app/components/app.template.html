@@ -32,7 +32,7 @@
     class="form-control input-sm" 
     id="group_select" >
     <option>none</option>
-    <option *ngFor=" let item of [1, 2, 3, 4]" >
+    <option *ngFor=" let item of all_groups_name() " >
         {{ item }}
     </option>
   </select>
@@ -100,7 +100,7 @@
     class="form-control" 
     id="new_component_group_select" >
     <option>none</option>
-    <option *ngFor=" let item of [1, 2, 3, 4]" >
+    <option *ngFor=" let item of all_groups_name() " >
         {{ item }}
     </option>
   </select>

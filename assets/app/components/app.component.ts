@@ -97,6 +97,19 @@ export class AppComponent {
         return comp_names; 
     };
 
+
+    all_groups_name (){
+        let groups_names = [];
+        this.components.forEach(function(el){
+            if (groups_names.indexOf(el.group) === -1 &&
+                el.group != 'none' ){
+                groups_names = [ ...groups_names, el.group ];
+            }
+        });
+        console.log( groups_names );
+        return groups_names; 
+    };
+
     add_new_field() {
         //console.log( this.new_field,  this.component_editable );
 
