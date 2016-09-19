@@ -191,6 +191,10 @@
     </button> 
 
   </div>
+  
+<data-wrapper *ngIf=" error_msg['new_field'] " >
+   <p class="admin-error-msg" > {{ error_msg['new_field'] }} </p>
+</data-wrapper>
 
 </form>
 
@@ -204,6 +208,8 @@
     *ngIf=" show_if_type_field_exist( 'string' ) " > 
         String fields : 
   </p>
+
+    
   <data-wrapper *ngFor=" let field of component_editable.body" >
   <div 
     *ngIf=" field.type === 'string' " 
@@ -222,7 +228,6 @@
 
   </div>
   </data-wrapper>
-
 
   <p class=" type-field-header "
     *ngIf=" show_if_type_field_exist( 'text' ) " > 
@@ -334,6 +339,10 @@
     </div>
   </div>
 
+<data-wrapper *ngIf=" error_msg['edit-component'] " >
+   <p class="admin-error-msg" > {{ error_msg['edit-component'] }} </p>
+</data-wrapper>  
+
 <div class="row admin-edit-btn-group" >
     <button (click)="change_component()"
     class="col-xs-12 col-sm-3 btn btn-default" type="submit">
@@ -362,8 +371,8 @@
 </data-wrapper>
 
 
-<data-wrapper *ngIf=" error_msg " >
-   <p class="admin-error-msg" > {{ error_msg }} </p>
+<data-wrapper *ngIf=" error_msg['global'] " >
+   <p class="admin-error-msg" > {{ error_msg['global'] }} </p>
 </data-wrapper>
 
 

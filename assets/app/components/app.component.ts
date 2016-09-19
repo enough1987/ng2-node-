@@ -22,6 +22,7 @@ export class AppComponent {
     public components_current_view = 'all';
     public new_component = [];
     //public create_component_group = '';
+    public error_msg = [];
 
     constructor(public storageService: StorageService) {}
 
@@ -68,9 +69,9 @@ export class AppComponent {
         if ( a == b ) return true;
     };
 
-    set_error_msg( error_msg ){
-        this.error_msg = error_msg;
-        setTimeout( ()=> this.error_msg = '', 3000 );
+    set_error_msg( error_msg, location = 'global' ){
+        this.error_msg[location] = error_msg;
+        setTimeout( ()=> this.error_msg[location] = '', 3000 );
     };
 
     is_component_exist(name){
@@ -122,12 +123,12 @@ export class AppComponent {
         //console.log( this.new_field,  this.component_editable );
 
         if ( !this.new_field.name ) {
-            this.set_error_msg( 'No field name was provided ' ); 
+            this.set_error_msg( ' No field name was provided ', 'new_field' ); 
             console.log( 'No name was provided ' );
             return false;
         }
         if ( this.is_field_exist(this.new_field.name) ) {
-            this.set_error_msg( 'One field has this name ' ); 
+            this.set_error_msg( 'One field has this name ', 'new_field' ); 
             console.log( 'One filed has this name' );
             return false;            
         }
@@ -260,7 +261,7 @@ export class AppComponent {
 
         if (  this.component_editable.new_name != this.component_editable.name && 
               this.is_component_exist(this.component_editable.new_name) ) {
-            this.set_error_msg( 'One component has this name ' ); 
+            this.set_error_msg( 'One component has this name ', 'edit-component' ); 
             console.log( 'One component has this name' );
             return false;           
         }
@@ -282,13 +283,13 @@ export class AppComponent {
     copy_component() {
         if ( !this.component_editable.new_name ||
               this.component_editable.name == this.component_editable.new_name ) {
-            this.set_error_msg( 'No new name was provided ' ); 
+            this.set_error_msg( 'No new name was provided ', 'edit-component' ); 
             console.log( 'No new name was provided ' );
             return false;    
         }
         if( this.is_component_exist(this.component_editable.new_name)
             ){
-            this.set_error_msg( 'One component has this name ' ); 
+            this.set_error_msg( 'One component has this name ', 'edit-component' ); 
             console.log( 'One component has this name' );
             return;
         }
