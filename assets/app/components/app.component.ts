@@ -16,6 +16,7 @@ import {sortByGroupPipe} from "../pipes/sortByGroup.pipe";
 export class AppComponent {
     //public new_component = this.init_new_component();
     public components = [];
+    public pages = [];
     //public component_editable = [];
     public new_field = { type: "string" };   
     //public new_group = [];
@@ -23,12 +24,14 @@ export class AppComponent {
     public new_component = [];
     //public create_component_group = '';
     public error_msg = [];
+    public pages_current_view = 'all';
 
     constructor(public storageService: StorageService) {}
 
     ngOnInit() {
         console.log('ngOnInit');
         this.get_all_components();
+        this.get_all_pages();
     };
 
     get_all_components() {
@@ -36,6 +39,14 @@ export class AppComponent {
             subscribe( res => {
                 console.log( 'get - ' , res );
                 if( !res.error ) this.components = res.components;
+            });
+    };
+
+    get_all_pages() {
+        this.storageService.select('/api/pages' ).
+            subscribe( res => {
+                console.log( 'get - ' , res );
+                if( !res.error ) this.pages = res.pages;
             });
     };
 
@@ -316,6 +327,23 @@ export class AppComponent {
                 }
             });
     };
+
+    set_pages_current_view( view ) {
+        if ( view == 'all') document.getElementById('collection_select').value = 'none';
+        this.pages_current_view = view;
+        console.log( ' pages_current_view ', this.pages_current_view );       
+    };
+
+    all_pages_name (){
+        let page_names = [];
+        this.pages.forEach(function(el){
+            page_names = [...page_names, el.name ];
+        });
+        //console.log( comp_names );
+        return page_names; 
+    };
+
+
 
 /*
 

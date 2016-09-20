@@ -2,7 +2,8 @@ var express = require('express');
 var router = express.Router();
 var url = require("url");
 
-var db_components = require(__dirname + '/mongo.js').components_model;
+var db_components = require(__dirname + '/mongo_components.js').components_model;
+var db_pages = require(__dirname + '/mongo_pages.js').pages_model;
 
 // remove all
 //db_components.find().remove().exec();
@@ -159,6 +160,14 @@ router.put('/api/components/group/delete', function(req, res, next){
         } // for doc
         //console.log( ' END ' ); 
       });
+});
+
+router.get('/api/pages', function(req, res, next){
+    var data = db_pages.find();
+    data.then(function(doc){   
+      console.log( ' find pages ' );
+      res.json({error: false, pages: doc});
+    });
 });
 
 router.get('*', function(req, res, next) {
