@@ -401,7 +401,7 @@
     class="form-control input-sm" 
     id="collection_select" >
     <option>none</option>
-    <option *ngFor=" let item of all_collection_name() " >
+    <option *ngFor=" let item of all_groups_name(pages) " >
         {{ item }}
     </option>
   </select>

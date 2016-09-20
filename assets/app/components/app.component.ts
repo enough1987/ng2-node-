@@ -118,9 +118,10 @@ export class AppComponent {
     };
 
 
-    all_groups_name (){
+    all_groups_name ( data = this.components ){
+        console.log( data );
         let groups_names = [];
-        this.components.forEach(function(el){
+        data.forEach(function(el){
             if (groups_names.indexOf(el.group) === -1 &&
                 el.group != 'none' ){
                 groups_names = [ ...groups_names, el.group ];
@@ -342,6 +343,8 @@ export class AppComponent {
         //console.log( comp_names );
         return page_names; 
     };
+
+    
 
 
 
