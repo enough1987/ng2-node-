@@ -1,10 +1,7 @@
 
 
-
-var mongoose = require('mongoose');
-
-var Schema = mongoose.Schema;
-var ObjectId = Schema.ObjectId;
+var mongoose = require(__dirname + '/mongoose_barrel.js').mongoose;
+var Schema = require(__dirname + '/mongoose_barrel.js').Schema;
 
 
 var con = mongoose.createConnection('localhost:27017/pages');
@@ -16,5 +13,4 @@ var pages_schema = new Schema({
 var pages_model = con.model('pages', pages_schema);
 
 
-module.exports.ObjectId = ObjectId;
 module.exports.pages_model = pages_model;

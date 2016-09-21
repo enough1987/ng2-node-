@@ -20,7 +20,7 @@ export class AppComponent {
     //public component_editable = [];
     public new_field = { type: "string" };   
     //public new_group = [];
-    public components_current_view = 'all';
+    public part_current_view = 'all';
     public new_component = [];
     //public create_component_group = '';
     public error_msg = [];
@@ -52,18 +52,20 @@ export class AppComponent {
 
     set_current_view( view ){
         this.current_view = view;
+        this.part_current_view = "all";
     };
-    set_components_current_view( view ) {
+    
+    set_part_current_view( view ) {
         if ( view == 'all') document.getElementById('group_select').value = 'none';
-        this.components_current_view = view;
-        console.log( ' components_current_view ', this.components_current_view );       
+        this.part_current_view = view;
+        console.log( ' part_current_view ', this.part_current_view );       
     };
 
     set_sorted_components_current_view( sort ){
-        this.components_current_view = 'sorted_view';
+        this.part_current_view = 'sorted_view';
         this.sorted_by_value = sort; 
         console.log( this.sorted_by_value ); 
-    }
+    };
 
     set_new_component_group_select( value ) {
         this.new_component.group = value;
@@ -119,7 +121,7 @@ export class AppComponent {
 
 
     all_groups_name ( data = this.components ){
-        console.log( data );
+        //console.log( data );
         let groups_names = [];
         data.forEach(function(el){
             if (groups_names.indexOf(el.group) === -1 &&
@@ -129,6 +131,12 @@ export class AppComponent {
         });
         //console.log( groups_names );
         return groups_names; 
+    };
+
+    show_group_select( selected ) {
+        let arr = this.all_groups_name( selected );
+        //console.log( selected, ' ' , arr , ' ' , arr.length );
+        return arr.length;
     };
 
     add_new_field() {
@@ -262,7 +270,7 @@ export class AppComponent {
                     this.components = res.components;
                     let edit_comp = this.components.find( comp => comp.name == this.new_component.name);
                     if ( edit_comp ) {
-                        this.set_components_current_view('edit-component');
+                        this.set_part_current_view('edit-component');
                         this.set_edit_component( edit_comp );
                     }
                 }
@@ -324,7 +332,7 @@ export class AppComponent {
                 console.log( 'delete - ' , res );
                 if ( !res.error ) {
                     this.components = res.components;
-                    this.set_components_current_view( 'all' );
+                    this.set_part_current_view( 'all' );
                 }
             });
     };
@@ -344,7 +352,11 @@ export class AppComponent {
         return page_names; 
     };
 
-    
+    set_sorted_pages_current_view( sort ){
+        this.pages_current_view = 'sorted_view';
+        this.sorted_by_value = sort; 
+        console.log( this.sorted_by_value ); 
+    };    
 
 
 
