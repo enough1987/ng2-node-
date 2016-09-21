@@ -31,7 +31,7 @@
                         <div                                             
                         class="col-xs-12 col-sm-2">
   <select  *ngIf="show_group_select()"
-    (change)="set_sorted_components_current_view($event.target.value)"
+    (change)="set_sorted_part_current_view($event.target.value)"
     class="form-control input-sm" 
     id="group_select" >
     <option>none</option>
@@ -47,7 +47,7 @@
 
 
 
-<data-wrapper *ngIf=" part_current_view == 'all' " >            
+<data-wrapper *ngIf=" part_current_view == 'all' || part_current_view == 'sorted_view' " >            
 
             <div class="row" >
 
@@ -58,7 +58,7 @@
             </div>
 
             <div class="row" 
-                *ngFor=" let component of components " > 
+                *ngFor=" let component of components | sortByGroup : { sort : sorted_by_value , view : part_current_view } " > 
 
                 <label class="col-xs-12 col-sm-4 "> 
                     Name : {{ component.name }} 
@@ -76,35 +76,6 @@
 
 </data-wrapper>
 
-
-<data-wrapper *ngIf=" part_current_view == 'sorted_view' " >            
-
-            <div class="row" >
-
-                 <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-10  btn btn-default c-admin-btn-add" 
-                        value="create"
-                       (click)="set_part_current_view('create-component')" /> 
-
-            </div>
-
-            <div class="row" 
-                *ngFor=" let component of components | sortByGroup : sorted_by_value " > 
-
-                <label class="col-xs-12 col-sm-4 "> 
-                    Name : {{ component.name }} 
-                </label>
-
-                <label class="col-xs-12 col-sm-4 ">
-                    Group : {{ component.group || 'none' }} 
-                </label>
-
-                <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-2  btn btn-default" value="edit"
-                       (click)=" set_part_current_view('edit-component') "
-                       (click)=" set_edit_component(component) " />  
-
-            </div>
-
-</data-wrapper>
 
 
 <data-wrapper *ngIf=" part_current_view == 'create-component' " > 
@@ -397,7 +368,7 @@
                         <div                                             
                         class="col-xs-12 col-sm-2">
   <select *ngIf="show_group_select(pages)"
-    (change)="set_sorted_pages_current_view($event.target.value)"
+    (change)="set_sorted_part_current_view($event.target.value)"
     class="form-control input-sm" 
     id="collection_select" >
     <option>none</option>
@@ -412,7 +383,7 @@
            </div>
 
 
-<data-wrapper *ngIf=" part_current_view == 'all' " >            
+<data-wrapper *ngIf=" part_current_view == 'all' || part_current_view == 'sorted_view' " >            
 
             <div class="row" >
 
@@ -423,7 +394,7 @@
             </div>
 
             <div class="row" 
-                *ngFor=" let page of pages " > 
+                *ngFor=" let page of pages | sortByGroup : { sort : sorted_by_value , view : part_current_view }" > 
 
                 <label class="col-xs-12 col-sm-4 "> 
                     Name : {{ page.name }} 
@@ -438,6 +409,51 @@
                        (click)=" set_edit_pages(page) " />  
 
             </div>
+
+</data-wrapper>
+
+
+<data-wrapper *ngIf=" part_current_view == 'create-page' " > 
+
+
+<form class="form-horizontal">
+  <div class="form-group">
+    <label for="new_page_name" class="col-sm-2 control-label">Name</label>
+    <div class="col-xs-12 col-sm-5">
+      <input 
+[(ngModel)]="new_page.name"    
+      type="text" class="form-control" id="new_page_name" placeholder="name">
+    </div>
+  </div>
+  <div class="form-group">
+    <label for="new_page_group" class="col-sm-2 control-label">Group</label>
+    <div class="col-xs-12 col-sm-5">
+      <input 
+[(ngModel)]="new_page.group"
+(keyup)="change_new_page_group()"
+      type="text" class="form-control" id="new_page_group" placeholder="group" />
+    </div>
+    <div class="col-xs-12 col-sm-5" *ngIf="show_group_select()" >
+        <select 
+(change)="set_new_page_group_select($event.target.value)"
+    class="form-control" 
+    id="new_page_group_select" >
+            <option>none</option>
+            <option *ngFor=" let item of all_groups_name() " >
+                {{ item }}
+            </option>
+        </select>
+    </div>
+
+  </div>
+  <div class="form-group">
+    <button (click)="create_page()"
+    class="col-xs-12 col-sm-2 col-sm-offset-4 btn btn-default" type="submit">
+        create page
+    </button>
+  </div>
+
+</form>
 
 </data-wrapper>
 

@@ -17,14 +17,16 @@ export class AppComponent {
     //public new_component = this.init_new_component();
     public components = [];
     public pages = [];
+    public part_current_view = 'all';
     //public component_editable = [];
     public new_field = { type: "string" };   
     //public new_group = [];
-    public part_current_view = 'all';
+
     public new_component = [];
     //public create_component_group = '';
     public error_msg = [];
-    public pages_current_view = 'all';
+    public new_page = [];
+
 
     constructor(public storageService: StorageService) {}
 
@@ -56,12 +58,17 @@ export class AppComponent {
     };
     
     set_part_current_view( view ) {
-        if ( view == 'all') document.getElementById('group_select').value = 'none';
+        if ( view == 'all') {
+            document.getElementById('group_select') ? 
+                document.getElementById('group_select').value = 'none' : '';
+            document.getElementById('collection_select') ? 
+                document.getElementById('collection_select').value = 'none' : '';            
+        }
         this.part_current_view = view;
         console.log( ' part_current_view ', this.part_current_view );       
     };
 
-    set_sorted_components_current_view( sort ){
+    set_sorted_part_current_view( sort ){
         this.part_current_view = 'sorted_view';
         this.sorted_by_value = sort; 
         console.log( this.sorted_by_value ); 
@@ -125,6 +132,7 @@ export class AppComponent {
         let groups_names = [];
         data.forEach(function(el){
             if (groups_names.indexOf(el.group) === -1 &&
+                el.group && 
                 el.group != 'none' ){
                 groups_names = [ ...groups_names, el.group ];
             }
@@ -337,11 +345,6 @@ export class AppComponent {
             });
     };
 
-    set_pages_current_view( view ) {
-        if ( view == 'all') document.getElementById('collection_select').value = 'none';
-        this.pages_current_view = view;
-        console.log( ' pages_current_view ', this.pages_current_view );       
-    };
 
     all_pages_name (){
         let page_names = [];
@@ -351,12 +354,7 @@ export class AppComponent {
         //console.log( comp_names );
         return page_names; 
     };
-
-    set_sorted_pages_current_view( sort ){
-        this.pages_current_view = 'sorted_view';
-        this.sorted_by_value = sort; 
-        console.log( this.sorted_by_value ); 
-    };    
+   
 
 
 
