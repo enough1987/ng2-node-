@@ -356,6 +356,16 @@ export class AppComponent {
     };
    
 
+    set_new_page_group_select( value ) {
+        this.new_page.group = value;
+    };
+
+
+    change_new_page_group() {
+        let res = [1,2,3,4].find( el => el == this.new_page.group) || 'none' ;
+        document.getElementById('new_page_group_select').value = res;
+        console.log( 'new_page_group_select ', res ); 
+    };
 
 
 /*
