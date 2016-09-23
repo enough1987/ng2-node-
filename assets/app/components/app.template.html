@@ -433,7 +433,7 @@
 (keyup)="change_new_page_group()"
       type="text" class="form-control" id="new_page_group" placeholder="group" />
     </div>
-    <div class="col-xs-12 col-sm-5" *ngIf="show_group_select()" >
+    <div class="col-xs-12 col-sm-5" *ngIf="show_group_select(pages)" >
         <select 
 (change)="set_new_page_group_select($event.target.value)"
     class="form-control" 
