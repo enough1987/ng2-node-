@@ -170,6 +170,32 @@ router.get('/api/pages', function(req, res, next){
     });
 });
 
+
+router.post('/api/pages', function(req, res, next){
+      if ( !req.body.name || !req.body.group || !req.body.body) {
+        res.json({error: true, msg: 'no name or group or body was provided'});
+        return ;
+      }
+      var post = new db_pages({
+        name : req.body.name,
+        group : req.body.group,
+        body : req.body.body
+      });
+      post.save(function (err, result) {
+        if( err ) {
+          res.json({error: true, msg: 'save was not work'});
+          return ;
+        }
+        var data = db_pages.find();
+        data.then(function(doc){  
+          res.json({
+            error : false,
+            pages : doc
+          }); 
+        });
+      });
+});
+
 router.get('*', function(req, res, next) {
     console.log( 'go - 1');
     res.render('index');

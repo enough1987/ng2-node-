@@ -439,7 +439,7 @@
     class="form-control" 
     id="new_page_group_select" >
             <option>none</option>
-            <option *ngFor=" let item of all_groups_name() " >
+            <option *ngFor=" let item of all_groups_name(pages) " >
                 {{ item }}
             </option>
         </select>

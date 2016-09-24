@@ -80,7 +80,8 @@ export class AppComponent {
 
     change_new_component_group() {
         //console.log( 'keyup val ', this.create_component_group );
-        let res = [1,2,3,4].find( el => el == this.new_component.group) || 'none' ;
+        //console.log( 'a l l ', this.all_groups_name() );
+        let res = this.all_groups_name().find( el => el == this.new_component.group) || 'none' ;
         document.getElementById('new_component_group_select').value = res;
         console.log( 'new_component_group_select ', res ); 
     };
@@ -270,7 +271,7 @@ export class AppComponent {
         this.storageService.insert('/api/components', {
             name : this.new_component.name,
             group : this.new_component.group || 'none',
-            body : []
+            body : body
          }).
             subscribe( res => {
                 console.log( 'post - ' , res );
@@ -362,9 +363,58 @@ export class AppComponent {
 
 
     change_new_page_group() {
-        let res = [1,2,3,4].find( el => el == this.new_page.group) || 'none' ;
-        document.getElementById('new_page_group_select').value = res;
+        let res = this.all_groups_name(this.page).find( el => el == this.new_page.group) || 'none' ;
+        document.getElementById('new_page_group_select') ? 
+            document.getElementById('new_page_group_select').value = res : '' ;
         console.log( 'new_page_group_select ', res ); 
+    };
+
+    is_page_exist(name){
+        let res = this.pages.find( page => page.name == name);
+        return res;
+    };
+
+
+    set_edit_page( edit_page ) {
+        this.page_editable = edit_page;
+        this.page_editable.new_name = this.page_editable.name;
+    };
+
+    create_page(){
+        if ( ! this.new_page.name ) {
+            this.set_error_msg( ' No name was provided ' );
+            console.log( 'No name was provided ' );
+            return false;
+        }
+        if ( this.is_page_exist(this.new_page.name) ) {
+            this.set_error_msg( 'One page has this name ' ); 
+            console.log( 'One page has this name' );
+            return false;           
+        }
+
+        if ( ! this.new_page.group ) this.new_page.group = 'none' ;
+        let body = [];
+        if ( this.new_page.group !== 'none' ){
+            let res = this.pages.find( page => page.group == this.new_page.group);
+            if ( res ) body = res.body ;
+        }
+
+        this.storageService.insert('/api/pages', {
+            name : this.new_page.name,
+            group : this.new_page.group || 'none',
+            body : body
+         }).
+            subscribe( res => {
+                console.log( 'post - ' , res );
+                if ( !res.error ) {
+                    this.pages = res.pages;
+                    let edit_page = this.pages.find( page => page.name == this.new_page.name);
+                    if ( edit_page ) {
+                        this.set_part_current_view('edit-page');
+                        this.set_edit_page( edit_page );
+                    }
+                }
+        });
     };
 
 
