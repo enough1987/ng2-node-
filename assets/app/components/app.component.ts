@@ -279,6 +279,7 @@ export class AppComponent {
                     this.components = res.components;
                     let edit_comp = this.components.find( comp => comp.name == this.new_component.name);
                     if ( edit_comp ) {
+                        this.new_component = [];
                         this.set_part_current_view('edit-component');
                         this.set_edit_component( edit_comp );
                     }
@@ -410,6 +411,7 @@ export class AppComponent {
                     this.pages = res.pages;
                     let edit_page = this.pages.find( page => page.name == this.new_page.name);
                     if ( edit_page ) {
+                        this.new_page = [];
                         this.set_part_current_view('edit-page');
                         this.set_edit_page( edit_page );
                     }
