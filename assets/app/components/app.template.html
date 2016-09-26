@@ -405,7 +405,7 @@
                 </label>
 
                 <input type="button" class="col-xs-12 col-sm-2 col-sm-offset-2  btn btn-default" value="edit"
-                       (click)=" set_current_view('edit-page') "
+                       (click)=" set_part_current_view('edit-page') "
                        (click)=" set_edit_page(page) " />  
 
             </div>
@@ -477,204 +477,45 @@
 
   <div class="form-group">
    
-    <div class="col-xs-12 col-sm-6">
+    <div class="col-xs-12 col-sm-4" >
       <input 
-[(ngModel)]="new_field.name"    
+[(ngModel)]="new_page_field.name"    
       type="text" class="col-xs-12 col-sm-6 form-control" placeholder="field name" />
     </div>
-    <div class="col-xs-12 col-sm-2">
-  <select
-    (change)="set_new_field_type($event.target.value)"
-    class="form-control"
-    id="new-field-id" 
-    >
-    <option value="string">String</option>
-    <option value="text">Text</option>  
-    <option value="number">Number</option>  
-    <option value="image">Image</option>  
-    <option value="component">Component</option>       
-  </select>
+    <div class="col-xs-12 col-sm-3" >
+        <select 
+(change)="change_new_page_field_value($event.target.value)"        
+    class="form-control" 
+    id="new_page_field_value_select" >
+            <option>none</option>
+            <option *ngFor=" let item of all_components_name() " >
+                {{ item }}
+            </option>
+        </select>
     </div>
-    <button (click)="add_new_field()"
+    <button (click)="add_new_page_field()"
             class="col-xs-12 col-sm-3 btn btn-default" >
             Set new field
     </button> 
 
   </div>
   
-<data-wrapper *ngIf=" error_msg['new_field'] " >
-   <p class="admin-error-msg" > {{ error_msg['new_field'] }} </p>
+<data-wrapper *ngIf=" error_msg['new_page_field'] " >
+   <p class="admin-error-msg" > {{ error_msg['new_page_field'] }} </p>
 </data-wrapper>
 
 </form>
 
 <p class="t-a-center no-field" 
- *ngIf=" ! component_editable?.body?.length " >
+ *ngIf=" ! page_editable?.body?.length " >
     No field was created
 </p>
 
 
-  <p class=" type-field-header "
-    *ngIf=" show_if_type_field_exist( 'string' ) " > 
-        String fields : 
-  </p>
 
-    
-  <data-wrapper *ngFor=" let field of component_editable.body" >
-  <div 
-    *ngIf=" field.type === 'string' " 
-    class="row">
+        <pre >
 
-    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
-    <div class="col-xs-12 col-sm-6">
-      <input 
-[(ngModel)]="field.value"    
-      type="text" class="form-control" id="field_name" />
-    </div>
-    <button (click)="delete_field(field._id)"
-    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
-        delete
-    </button>
-
-  </div>
-  </data-wrapper>
-
-  <p class=" type-field-header "
-    *ngIf=" show_if_type_field_exist( 'text' ) " > 
-        Text fields : 
-  </p>
-  <data-wrapper *ngFor=" let field of component_editable.body" >
-  <div 
-    *ngIf=" field.type === 'text' " 
-    class="row">
-
-    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
-    <div class="col-xs-12 col-sm-6">
-        <textarea 
-[(ngModel)]="field.value" 
-        class="form-control" rows="3"></textarea>
-    </div>
-    <button (click)="delete_field(field._id)"
-    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
-        delete
-    </button>
-
-  </div>
-  </data-wrapper>
-
-
-  <p class=" type-field-header "
-    *ngIf=" show_if_type_field_exist( 'number' ) " > 
-        Number fields : 
-  </p>
-  <data-wrapper *ngFor=" let field of component_editable.body" >
-  <div 
-    *ngIf=" field.type === 'number' " 
-    class="row">
-
-    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
-    <div class="col-xs-12 col-sm-6">
-      <input 
-[(ngModel)]="field.value"    
-      type="number" class="form-control" id="field_name"  />
-    </div>
-    <button (click)="delete_field(field._id)"
-    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
-        delete
-    </button>
-
-  </div>
-  </data-wrapper>
-
-
-  <p class=" type-field-header "
-    *ngIf=" show_if_type_field_exist( 'image' ) " > 
-        Image fields : 
-  </p>
-  <data-wrapper *ngFor=" let field of component_editable.body" >
-  <div 
-    *ngIf=" field.type === 'image' " 
-    class="row">
-
-    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
-    <div class="col-xs-12 col-sm-6">
-      <input 
-[(ngModel)]="field.value"    
-      type="number" class="form-control" id="field_name" />
-    </div>
-    <button (click)="delete_field(field._id)"
-    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
-        delete
-    </button>
-
-  </div>
-  </data-wrapper>
-
-  <p class=" type-field-header "
-    *ngIf=" show_if_type_field_exist( 'component' ) " > 
-        Component fields : 
-  </p>
-  <data-wrapper *ngFor=" let field of component_editable.body" >
-  <div 
-    *ngIf=" field.type === 'component' " 
-    class="row">
-
-    <label for="field_name" class="col-xs-12 col-sm-3 t-a-left c-label" > {{ field.name }} </label>
-    <div class="col-xs-12 col-sm-6">
-        <select
-            (change)="set_component_field_value(field, $event.target.value)"
-            class="form-control" 
-            >
-            <option selected ></option>
-            <option *ngFor=" let name of all_components_name() " >
-                {{ name }}
-            </option>
-      
-        </select>
-    </div>
-    <button (click)="delete_field(field._id)"
-    class="col-xs-12 col-sm-2 btn btn-default" type="submit">
-        delete
-    </button>
-
-  </div>
-  </data-wrapper>
-
-  <div class="row small-marg-top">
-    <label for="component_editable_name" class="col-xs-12 col-sm-3 t-a-left c-label"> New name :</label>
-    <div class="col-xs-12 col-sm-6">
-      <input 
-[(ngModel)]="component_editable.new_name"    
-      type="text" class="form-control" id="component_editable_name" placeholder="name" />
-    </div>
-  </div>
-
-<data-wrapper *ngIf=" error_msg['edit-component'] " >
-   <p class="admin-error-msg" > {{ error_msg['edit-component'] }} </p>
-</data-wrapper>  
-
-<div class="row admin-edit-btn-group" >
-    <button (click)="change_component()"
-    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
-        change component
-    </button>
-    <button (click)="copy_component()"
-    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
-        copy component
-    </button>
-    <button (click)="delete_component()"
-    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
-        delete component
-    </button>    
-    <button (click)="show_json_of_edit_component()"
-    class="col-xs-12 col-sm-3 btn btn-default" type="submit">
-        show json
-    </button>       
-</div>
-
-        <pre *ngIf=" json_of_edit_component_is_visible " >
-
-            {{ component_editable | json }}
+            {{ page_editable | json }}
 
         </pre>
 

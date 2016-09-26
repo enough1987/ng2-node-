@@ -26,6 +26,7 @@ export class AppComponent {
     //public create_component_group = '';
     public error_msg = [];
     public new_page = [];
+    public new_page_field = {};  
 
 
     constructor(public storageService: StorageService) {}
@@ -381,6 +382,57 @@ export class AppComponent {
         this.page_editable.new_name = this.page_editable.name;
     };
 
+    change_new_page_field_value( value ) {
+        this.new_page_field.value = value;
+    };
+
+    is_page_field_name_exist(name){
+        return this.page_editable.body.find( field => console.log(field.name) );
+    };
+
+    set_new_page_field_value(page_editable, new_page_field){
+        //console.log(' tttttttt ', page_editable, new_page_field);
+        let comp = this.components.find(el => { return el.name === new_page_field.value ? true : false });
+        //console.log( ' comp ', comp );
+        new_page_field.value = comp;
+    };
+
+    add_new_page_field(){
+        console.log( this.new_page_field ); 
+        if( this.is_page_field_name_exist(this.new_page_field.name) ) {
+            this.set_error_msg( 'One field has this name ', 'new_page_field' ); 
+            console.log( ' no name was provided ' );
+            return;
+        };
+
+        if( this.new_page_field.value == 'none' ) this.new_page_field.value = '';
+        if( this.new_page_field.value ) {
+            this.set_new_page_field_value(this.page_editable, this.new_page_field);
+        }
+        
+        this.new_page_field._id = this.create_guid();  
+        this.page_editable.body = [...this.page_editable.body, this.new_page_field];
+
+        this.new_page_field = {};
+        document.getElementById('new_page_field_value_select') ? 
+            document.getElementById('new_page_field_value_select').value = 'none' : '' ;
+
+        
+        return console.log( ' end ' );
+
+        this.storageService.update('/api/components',{
+            id : this.component_editable._id,
+            name : this.component_editable.name,
+            group : this.component_editable.group,
+            body : this.component_editable.body
+        }).
+            subscribe( res => {
+                console.log( 'put - ' , res );
+                if ( !res.error ) this.components = res.components;
+                console.log( ' b ', this.component_editable.body );
+        });
+    };
+
     create_page(){
         if ( ! this.new_page.name ) {
             this.set_error_msg( ' No name was provided ' );
@@ -418,6 +470,7 @@ export class AppComponent {
                 }
         });
     };
+
 
 
 /*
